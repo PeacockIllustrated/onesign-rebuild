@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OneLaser, case study: architectural fin set</title>
+<style>
+@font-face{font-family:'Gilroy';font-weight:400;src:url(data:font/ttf;base64,@FONT_REG@) format('truetype');font-display:swap}
+@font-face{font-family:'Gilroy';font-weight:700;src:url(data:font/ttf;base64,@FONT_BOLD@) format('truetype');font-display:swap}
+:root{
+  --paper:#FFFFFF;--wash:#F1F4F5;--ink:#0F1719;--steel:#5B6B70;--line:#DDE4E5;
+  --teal:#127A8C;--teal-deep:#0C5464;--teal-bright:#19A7BE;--nav:#0C1315;--r:6px;
+  --mono:'SFMono-Regular',ui-monospace,'Cascadia Mono',Consolas,monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:'Gilroy',system-ui,sans-serif;-webkit-font-smoothing:antialiased;line-height:1.6}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--teal);color:#fff}
+.wrap{max-width:1060px;margin:0 auto;padding:0 26px}
+b,strong{font-weight:700}
+.mono{font-family:var(--mono);font-size:.86em}
+
+.nav{background:var(--nav);color:#fff;display:flex;justify-content:space-between;align-items:center;padding:16px 26px;position:sticky;top:0;z-index:20}
+.logo{display:flex;align-items:center;gap:9px;font-weight:700;font-size:20px}
+.logo .mark{width:22px;height:22px;border-radius:50%;border:2px solid var(--teal-bright);display:inline-flex;align-items:center;justify-content:center;font-size:11px;color:var(--teal-bright)}
+.nav .back{font-size:13.5px;color:#BFCCCF}
+.nav .back:hover{color:#fff}
+
+/* job header, reads like a job sheet */
+.jobhead{border-bottom:1px solid var(--line);background:#0B1214;position:relative;overflow:hidden}
+.jobhead .seam{position:absolute;inset:0;pointer-events:none}
+.jobhead .in{position:relative}
+.jobhead .in{padding:52px 0 0}
+.jobno{font-family:var(--mono);font-size:12px;letter-spacing:.18em;color:#2FD4EE;text-transform:uppercase}
+h1{font-weight:700;font-size:clamp(34px,5.6vw,60px);letter-spacing:-.02em;line-height:1.02;margin:12px 0 8px;color:#F4F8F9}
+.client{color:#93A7AC;font-size:16px}
+.sheet{display:grid;grid-template-columns:repeat(6,1fr);border:1px solid var(--line);border-radius:var(--r) var(--r) 0 0;background:var(--paper);margin-top:36px;border-bottom:none}
+@media(max-width:860px){.sheet{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:520px){.sheet{grid-template-columns:repeat(2,1fr)}}
+.sheet div{padding:16px 18px;border-left:1px solid var(--line)}
+.sheet div:first-child{border-left:none}
+.sheet .k{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--teal)}
+.sheet .v{font-weight:700;font-size:15.5px;margin-top:3px}
+
+/* hero scene: the fin array itself */
+.heroimg{height:460px;background:#0B1214;position:relative;overflow:hidden}
+.heroimg svg{position:absolute;inset:0;width:100%;height:100%}
+.heroimg .cap{position:absolute;bottom:14px;left:26px;font-family:var(--mono);font-size:10.5px;color:#93A7AC;opacity:.7;letter-spacing:.12em;text-transform:uppercase}
+
+/* kerf rail layout: content runs beside a continuous cut line */
+.body{display:grid;grid-template-columns:56px 1fr;gap:0;padding:64px 0 0}
+@media(max-width:700px){.body{grid-template-columns:1fr}.rail{display:none}}
+.rail{position:relative}
+.rail::before{content:"";position:absolute;left:27px;top:0;bottom:0;width:1.5px;background:repeating-linear-gradient(to bottom,var(--teal) 0 10px,transparent 10px 16px)}
+.node{position:absolute;left:20px;width:15px;height:15px;background:var(--paper);border:1.5px solid var(--teal);border-radius:2px}
+
+.sec{padding:0 0 56px;max-width:660px}
+.sec .lab{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--teal);margin-bottom:10px}
+.sec h2{font-weight:700;font-size:clamp(22px,3.4vw,32px);letter-spacing:-.015em;margin-bottom:14px}
+.sec p{color:var(--steel);font-size:15.5px;margin-bottom:14px}
+.sec p b{color:var(--ink)}
+
+/* spec table */
+.spectable{width:100%;border:1px solid var(--line);border-radius:var(--r);border-collapse:separate;border-spacing:0;overflow:hidden;margin:10px 0 6px;font-size:14px}
+.spectable th{background:var(--wash);font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);text-align:left;padding:12px 16px;font-weight:400}
+.spectable td{padding:12px 16px;border-top:1px solid var(--line);color:var(--steel)}
+.spectable td:last-child{color:var(--ink);font-weight:700;text-align:right}
+
+/* image pair */
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:8px 0 2px}
+@media(max-width:600px){.pair{grid-template-columns:1fr}}
+.ph{height:230px;border-radius:var(--r);background:linear-gradient(140deg,var(--teal-deep),var(--teal));display:flex;align-items:flex-end;padding:14px}
+.ph.alt{background:linear-gradient(140deg,#20323680,var(--teal-deep))}
+.ph span{font-family:var(--mono);font-size:10.5px;color:#fff;opacity:.8;letter-spacing:.12em;text-transform:uppercase}
+
+/* verdict strip */
+.verdict{background:var(--nav);color:#fff;border-radius:var(--r);padding:34px 32px;margin:4px 0 56px;max-width:660px}
+.verdict .lab{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--teal-bright);margin-bottom:12px}
+.verdict p{font-size:17px;line-height:1.6;color:#D5E1E4}
+.verdict .sig{margin-top:14px;font-size:13px;color:#8FA2A6}
+
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:0 0 56px;max-width:660px}
+@media(max-width:600px){.stats{grid-template-columns:1fr}}
+.stat{border:1px solid var(--line);border-radius:var(--r);padding:20px}
+.stat .v{font-weight:700;font-size:30px;color:var(--teal);letter-spacing:-.01em}
+.stat .k{font-size:13px;color:var(--steel);margin-top:4px}
+
+/* next */
+.next{border-top:1px solid var(--line);margin-top:12px;padding:44px 0 64px;display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
+.next .lab{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--teal)}
+.next h3{font-weight:700;font-size:clamp(22px,3.6vw,34px);letter-spacing:-.015em;margin-top:6px}
+.btn{background:var(--teal);color:#fff;padding:13px 24px;border-radius:var(--r);font-weight:700;font-size:14px;transition:.15s;white-space:nowrap}
+.btn:hover{background:var(--teal-deep)}
+
+footer{background:var(--nav);color:#8FA2A6;padding:26px;font-size:12.5px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+footer a{color:#BFCCCF}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="logo"><span class="mark">1</span>onelaser</div>
+  <a class="back" href="#">← all recent cuts</a>
+</nav>
+
+<header class="jobhead">
+<svg class="seam" viewBox="0 0 1200 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+  <path d="M-20,210 C240,160 460,250 700,190 S1040,140 1220,180" fill="none" stroke="#1E6E7E" stroke-width="1.4"/>
+  <path d="M760,182 C880,168 990,158 1080,158" fill="none" stroke="#2FD4EE" stroke-width="2.6" opacity=".55"/>
+  <circle cx="1080" cy="158" r="2.2" fill="#EFFDFF" opacity=".8"/>
+</svg>
+<div class="wrap in">
+  <div class="jobno">case study / job 1147</div>
+  <h1>96 architectural fins,<br>one sheet at a time.</h1>
+  <p class="client">for a commercial facade contractor, Newcastle upon Tyne</p>
+  <div class="sheet">
+    <div><div class="k">material</div><div class="v">316 stainless</div></div>
+    <div><div class="k">thickness</div><div class="v">3 mm</div></div>
+    <div><div class="k">quantity</div><div class="v">96 parts</div></div>
+    <div><div class="k">tolerance</div><div class="v">±0.1 mm</div></div>
+    <div><div class="k">finish</div><div class="v">brushed, PPC</div></div>
+    <div><div class="k">lead time</div><div class="v">6 days</div></div>
+  </div>
+</div></header>
+
+<div class="heroimg">
+  <svg viewBox="0 0 1200 460" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+  <defs>
+    <radialGradient id="cbg" cx=".6" cy=".35" r=".8">
+      <stop offset="0" stop-color="#123840" stop-opacity=".7"/>
+      <stop offset="1" stop-color="#0B1214" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="cbloom" x="-300%" y="-30%" width="700%" height="160%">
+      <feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#cbg)"/>
+  <line x1="0" y1="14%" x2="100%" y2="14%" stroke="#1C2A2E" stroke-width="1"/>
+  <line x1="0" y1="80%" x2="100%" y2="80%" stroke="#1C2A2E" stroke-width="1"/>
+  <rect x="6.50%" y="14%" width="0.9%" height="66%" fill="#1E6E7E" opacity="0.28"/><rect x="6.50%" y="14%" width="0.28%" height="66%" fill="#7FB8C2" opacity="0.15"/><rect x="10.28%" y="14%" width="0.9%" height="66%" fill="#1E6E7E" opacity="0.35"/><rect x="10.28%" y="14%" width="0.28%" height="66%" fill="#7FB8C2" opacity="0.19"/><rect x="14.07%" y="14%" width="0.9%" height="66%" fill="#1E6E7E" opacity="0.41"/><rect x="14.07%" y="14%" width="0.28%" height="66%" fill="#7FB8C2" opacity="0.23"/><rect x="17.85%" y="14%" width="0.9%" height="66%" fill="#1E6E7E" opacity="0.48"/><rect x="17.85%" y="14%" width="0.28%" height="66%" fill="#7FB8C2" opacity="0.26"/><rect x="21.63%" y="14%" width="0.9%" height="66%" fill="#1E6E7E" opacity="0.54"/><rect x="21.63%" y="14%" width="0.28%" height="66%" fill="#7FB8C2" opacity="0.30"/><rect x="25.41%" y="14%" width="0.9%" height="66%" fill="#1E6E7E" opacity="0.60"/><rect x="25.41%" y="14%" width="0.28%" height="66%" fill="#7FB8C2" opacity="0.33"/><rect x="29.20%" y="14%" width="0.9%" height="66%" fill="#1E6E7E" opacity="0.65"/><rect x="29.20%" y="14%" width="0.28%" height="66%" fill="#7FB8C2" opacity="0.35"/><rect x="32.98%" y="14%" width="0.9%" height="66%" fill="#1E6E7E" opacity="0.69"/><rect x="32.98%" y="14%" width="0.28%" height="66%" fill="#7FB8C2" opacity="0.38"/><rect x="36.76%" y="14%" width="0.9%" height="66%" fill="#1E6E7E" opacity="0.72"/><rect x="36.76%" y="14%" width="0.28%" height="66%" fill="#7FB8C2" opacity="0.40"/><rect x="40.54%" y="14%" width="0.9%" height="66%" fill="#1E6E7E" opacity="0.75"/><rect x="40.54%" y="14%" width="0.28%" height="66%" fill="#7FB8C2" opacity="0.41"/><rect x="44.33%" y="14%" width="0.9%" height="66%" fill="#1E6E7E" opacity="0.77"/><rect x="44.33%" y="14%" width="0.28%" height="66%" fill="#7FB8C2" opacity="0.42"/><rect x="48.11%" y="14%" width="0.9%" height="66%" fill="#1E6E7E" opacity="0.78"/><rect x="48.11%" y="14%" width="0.28%" height="66%" fill="#7FB8C2" opacity="0.43"/><rect x="51.89%" y="14%" width="0.9%" height="66%" fill="#1E6E7E" opacity="0.78"/><rect x="51.89%" y="14%" width="0.28%" height="66%" fill="#7FB8C2" opacity="0.43"/><rect x="55.67%" y="14%" width="0.9%" height="66%" fill="#1E6E7E" opacity="0.77"/><rect x="55.67%" y="14%" width="0.28%" height="66%" fill="#7FB8C2" opacity="0.42"/><rect x="59.46%" y="14%" width="0.9%" height="66%" fill="#1E6E7E" opacity="0.75"/><rect x="59.46%" y="14%" width="0.28%" height="66%" fill="#7FB8C2" opacity="0.41"/><rect x="63.24%" y="14%" width="0.9%" height="66%" fill="#1E6E7E" opacity="0.72"/><rect x="63.24%" y="14%" width="0.28%" height="66%" fill="#7FB8C2" opacity="0.40"/><rect x="67.02%" y="14%" width="0.9%" height="66%" fill="#1E6E7E" opacity="0.69"/><rect x="67.02%" y="14%" width="0.28%" height="66%" fill="#7FB8C2" opacity="0.38"/><rect x="70.80%" y="14%" width="0.9%" height="66%" fill="#1E6E7E" opacity="0.65"/><rect x="70.80%" y="14%" width="0.28%" height="66%" fill="#7FB8C2" opacity="0.35"/><rect x="74.59%" y="14%" width="0.9%" height="66%" fill="#1E6E7E" opacity="0.60"/><rect x="74.59%" y="14%" width="0.28%" height="66%" fill="#7FB8C2" opacity="0.33"/><rect x="78.37%" y="14%" width="0.9%" height="66%" fill="#1E6E7E" opacity="0.54"/><rect x="78.37%" y="14%" width="0.28%" height="66%" fill="#7FB8C2" opacity="0.30"/><rect x="82.15%" y="14%" width="0.9%" height="66%" fill="#1E6E7E" opacity="0.48"/><rect x="82.15%" y="14%" width="0.28%" height="66%" fill="#7FB8C2" opacity="0.26"/><rect x="85.93%" y="14%" width="0.9%" height="66%" fill="#1E6E7E" opacity="0.41"/><rect x="85.93%" y="14%" width="0.28%" height="66%" fill="#7FB8C2" opacity="0.23"/><rect x="89.72%" y="14%" width="0.9%" height="66%" fill="#1E6E7E" opacity="0.35"/><rect x="89.72%" y="14%" width="0.28%" height="66%" fill="#7FB8C2" opacity="0.19"/><rect x="93.50%" y="14%" width="0.9%" height="66%" fill="#1E6E7E" opacity="0.28"/><rect x="93.50%" y="14%" width="0.28%" height="66%" fill="#7FB8C2" opacity="0.15"/>
+  <rect x="63.2%" y="14%" width="0.9%" height="66%" fill="#2FD4EE" opacity=".85" filter="url(#cbloom)"/>
+<rect x="63.35%" y="14%" width="0.25%" height="66%" fill="#EFFDFF" opacity=".9"/>
+  <rect x="0" y="80%" width="100%" height="20%" fill="#0B1214" opacity=".55"/>
+</svg>
+  <div class="cap">96 fins / brushed 316 / swap for site photography</div>
+</div>
+
+<div class="wrap"><div class="body">
+  <div class="rail">
+    <span class="node" style="top:6px"></span>
+    <span class="node" style="top:34%"></span>
+    <span class="node" style="top:62%"></span>
+  </div>
+  <div>
+    <section class="sec">
+      <div class="lab">the brief</div>
+      <h2>identical, or the facade fails.</h2>
+      <p>Ninety-six vertical fins for a commercial facade, every one visible against its neighbour. Any variation in width or hole position would telegraph straight down the run, so <b>repeatability mattered more than speed</b>. The contractor supplied a single DXF and a hard site date.</p>
+      <p>We quoted from the true cut path the same morning: 96 parts, three sheets of 3 mm 316, fixings pre-cut so nothing needed drilling on site.</p>
+    </section>
+
+    <section class="sec">
+      <div class="lab">the cut</div>
+      <h2>nested for grain, cut for the eye.</h2>
+      <p>Brushed stainless has a direction. All 96 fins were nested with the grain running the same way, so the finished facade reads as one surface rather than a patchwork. Micro-tabs held each part flat through the cut, and lead-ins were placed on the concealed edge.</p>
+      <table class="spectable">
+        <tr><th>parameter</th><th></th><th>value</th></tr>
+        <tr><td>cut length per part</td><td></td><td>2.84 m</td></tr>
+        <tr><td>pierces per part</td><td></td><td>7</td></tr>
+        <tr><td>kerf</td><td></td><td>0.18 mm</td></tr>
+        <tr><td>sheet utilisation</td><td></td><td>91%</td></tr>
+        <tr><td>measured variance across batch</td><td></td><td>0.06 mm</td></tr>
+      </table>
+      <div class="pair">
+        <div class="ph"><span>nest layout / sheet 2 of 3</span></div>
+        <div class="ph alt"><span>edge detail / as-cut, pre-brush</span></div>
+      </div>
+    </section>
+
+    <section class="sec">
+      <div class="lab">the finish</div>
+      <h2>off the bed, onto the wall.</h2>
+      <p>Every part was deburred and re-brushed in house, then polyester powder coated on the reverse face only, leaving the visible face in raw brushed 316. Parts shipped in numbered site order so the fitting team pulled them off the stillage in sequence.</p>
+    </section>
+
+    <div class="verdict">
+      <div class="lab">the client's words</div>
+      <p>"Every fin dropped onto its fixings first time. We did not adjust a single bracket across the whole elevation, which on a job this visible is the difference between a good week and a bad month."</p>
+      <div class="sig">site manager, facade contractor</div>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><div class="v">96/96</div><div class="k">parts fitted without rework</div></div>
+      <div class="stat"><div class="v">0.06 mm</div><div class="k">measured variance across the batch</div></div>
+      <div class="stat"><div class="v">6 days</div><div class="k">DXF received to delivery</div></div>
+    </div>
+  </div>
+</div></div>
+
+<div class="wrap"><div class="next">
+  <div>
+    <div class="lab">got a similar job?</div>
+    <h3>send the drawing, we will price it today.</h3>
+  </div>
+  <a class="btn" href="#">upload a DXF</a>
+</div></div>
+
+<footer>
+  <span>© 2026 One Group / onelasercutting.com</span>
+  <span>Need finished signage from your components? <a href="#">Visit OneSign</a></span>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OneDesign Studios, branding & creative</title>
+<style>
+@font-face{font-family:'Gilroy';font-weight:400;src:url(data:font/ttf;base64,@FONT_REG@) format('truetype');font-display:swap}
+@font-face{font-family:'Gilroy';font-weight:700;src:url(data:font/ttf;base64,@FONT_BOLD@) format('truetype');font-display:swap}
+:root{
+  --paper:#FDFDFC;--wash:#F3F6F5;--ink:#171E1D;--steel:#61706E;--line:#E2E8E7;
+  --teal:#2C8593;--teal-deep:#1D6270;--teal-bright:#42AEBF;--nav:#12191A;--r:22px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--paper);color:var(--ink);font-family:'Gilroy',system-ui,sans-serif;-webkit-font-smoothing:antialiased;line-height:1.6}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--teal);color:#fff}
+.wrap{max-width:1160px;margin:0 auto;padding:0 26px}
+b,strong{font-weight:700}
+
+/* nav, light this time: the design site breathes */
+.nav{background:var(--paper);display:flex;justify-content:space-between;align-items:center;padding:20px 26px;position:sticky;top:0;z-index:20;border-bottom:1px solid var(--line)}
+.logo{display:flex;align-items:center;gap:9px;font-weight:700;font-size:20px}
+.logo .mark{width:22px;height:22px;border-radius:50%;border:2px solid var(--teal);display:inline-flex;align-items:center;justify-content:center;font-size:11px;color:var(--teal)}
+.nav .links{display:flex;gap:24px;font-size:14.5px;color:var(--steel)}
+.nav .links a:hover{color:var(--teal)}
+.cta-sm{background:var(--ink);color:#fff;padding:9px 20px;border-radius:100px;font-weight:700;font-size:13px;transition:.15s}
+.cta-sm:hover{background:var(--teal)}
+@media(max-width:760px){.nav .links{display:none}}
+
+/* hero */
+.hero{position:relative;min-height:640px;display:flex;align-items:center;overflow:hidden;background:#10181A;border-bottom:1px solid var(--line)}
+.stage{position:absolute;inset:0;width:100%;height:100%}
+.scrim{position:absolute;inset:0;z-index:2;pointer-events:none;background:linear-gradient(90deg,rgba(16,24,26,.94) 0%,rgba(16,24,26,.7) 38%,rgba(16,24,26,.1) 64%,rgba(16,24,26,0) 78%)}
+.hero .eyebrow{color:var(--teal-bright)}
+.hero h1{color:#F4F8F7}
+.hero h1 .accent{color:var(--teal-bright)}
+.hero .lede{color:#9AAEAB}
+.hero .btn{background:#F4F8F7;color:var(--ink)}
+.hero .btn:hover{background:var(--teal-bright);color:#fff}
+.hero .btn.soft{background:transparent;border:1.5px solid #2A3A3C;color:#E9F0EF}
+.hero .btn.soft:hover{background:transparent;border-color:var(--teal-bright);color:var(--teal-bright)}
+.hero .inner{position:relative;z-index:3;padding:80px 0;width:100%}
+.eyebrow{font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--teal);font-weight:700;margin-bottom:22px}
+h1{font-weight:700;line-height:.98;letter-spacing:-.025em;font-size:clamp(46px,8.4vw,104px)}
+h1 .accent{color:var(--teal)}
+.lede{max-width:480px;margin-top:24px;color:var(--steel);font-size:17px}
+.btns{display:flex;gap:12px;margin-top:32px;flex-wrap:wrap;align-items:center}
+.btn{background:var(--ink);color:#fff;padding:15px 30px;border-radius:100px;font-weight:700;font-size:15px;transition:.15s}
+.btn:hover{background:var(--teal)}
+.btn.soft{background:var(--wash);color:var(--ink)}
+.btn.soft:hover{background:var(--teal);color:#fff}
+
+/* manifesto */
+.mani{padding:90px 0 30px}
+.mani p{font-weight:700;font-size:clamp(24px,4vw,40px);line-height:1.25;letter-spacing:-.02em}
+.mani p .dim{color:#B9C6C4}
+.mani p .accent{color:var(--teal)}
+.mani .sub{font-weight:400;font-size:16px;color:var(--steel);margin-top:22px;letter-spacing:0;line-height:1.6}
+
+/* services */
+.svcs{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;padding:56px 0 10px}
+@media(max-width:840px){.svcs{grid-template-columns:1fr}}
+.svc{background:var(--wash);border-radius:var(--r);padding:30px 28px;min-height:250px;display:flex;flex-direction:column;justify-content:space-between;transition:.2s;position:relative;overflow:hidden}
+.svc svg{position:absolute;top:18px;right:18px;width:64px;height:64px}
+.svc svg path{fill:none;stroke:var(--teal);stroke-width:2;stroke-linecap:round}
+.svc:hover{background:var(--teal);color:#fff}
+.svc:hover p{color:#D8ECEF}
+.svc:hover svg path{stroke:#fff}
+.svc:hover .go{color:#fff}
+.svc h3{font-weight:700;font-size:22px;letter-spacing:-.01em;max-width:70%}
+.svc p{font-size:14.5px;color:var(--steel);margin-top:10px;transition:.2s}
+.svc .go{margin-top:22px;font-weight:700;font-size:14px;color:var(--teal);transition:.2s}
+
+/* work */
+.shead{padding:80px 0 8px;display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap}
+.shead .lab{font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--teal);font-weight:700}
+.shead h2{font-weight:700;font-size:clamp(30px,5vw,52px);letter-spacing:-.02em;margin-top:6px}
+.shead a{font-weight:700;color:var(--teal);font-size:15px}
+.work{display:grid;grid-template-columns:1.4fr 1fr;gap:18px;padding:36px 0 8px}
+@media(max-width:840px){.work{grid-template-columns:1fr}}
+.proj{border-radius:var(--r);overflow:hidden;position:relative;display:block}
+.proj .ph{height:380px;background:linear-gradient(140deg,var(--teal-deep),var(--teal));transition:.35s ease}
+.proj.tall .ph{height:380px}
+.proj.short .ph{height:181px;background:linear-gradient(140deg,#22403F,var(--teal-deep))}
+.proj:hover .ph{transform:scale(1.03)}
+.proj .cap{position:absolute;left:22px;bottom:18px;color:#fff}
+.proj .cap .t{font-weight:700;font-size:20px;letter-spacing:-.01em}
+.proj .cap .d{font-size:13px;opacity:.8}
+.stack{display:grid;gap:18px}
+
+/* process ribbon */
+.ribbon{background:var(--nav);color:#fff;border-radius:var(--r);margin:80px 0 0;padding:46px 40px;position:relative;overflow:hidden}
+.ribbon svg{position:absolute;inset:0;width:100%;height:100%;opacity:.5}
+.ribbon svg path{fill:none;stroke:var(--teal-bright);stroke-width:1.6;stroke-linecap:round}
+.ribbon .in{position:relative}
+.ribbon h2{font-weight:700;font-size:clamp(26px,4vw,40px);letter-spacing:-.02em;max-width:520px}
+.rsteps{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;margin-top:36px}
+@media(max-width:840px){.rsteps{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.rsteps{grid-template-columns:1fr}}
+.rstep .n{font-weight:700;color:var(--teal-bright);font-size:14px}
+.rstep .t{font-weight:700;font-size:18px;margin-top:4px}
+.rstep .d{font-size:13px;color:#A8BBBE;margin-top:6px}
+
+/* studio note */
+.note{display:grid;grid-template-columns:1fr 1fr;gap:40px;padding:90px 0 10px;align-items:center}
+@media(max-width:840px){.note{grid-template-columns:1fr}}
+.note .ph{height:340px;border-radius:var(--r);background:linear-gradient(160deg,var(--wash),#DCE7E5);display:flex;align-items:flex-end;padding:18px}
+.note .ph span{font-size:12px;color:var(--steel);letter-spacing:.1em;text-transform:uppercase}
+.note h2{font-weight:700;font-size:clamp(26px,4vw,40px);letter-spacing:-.02em}
+.note p{color:var(--steel);font-size:15.5px;margin-top:16px}
+.note p b{color:var(--ink)}
+
+/* cta */
+.endcta{text-align:center;padding:100px 0 90px}
+.endcta h2{font-weight:700;font-size:clamp(34px,6.4vw,72px);letter-spacing:-.025em;line-height:1.02}
+.endcta h2 .accent{color:var(--teal)}
+.endcta .btn{margin-top:32px;display:inline-block}
+
+footer{background:var(--nav);color:#A8BBBE;padding:44px 0 28px}
+.fgrid{display:flex;justify-content:space-between;gap:30px;flex-wrap:wrap}
+footer .logo{color:#fff;margin-bottom:10px}
+.fcol h5{color:#fff;font-size:11px;letter-spacing:.16em;text-transform:uppercase;margin-bottom:12px}
+.fcol a,.fcol p{display:block;font-size:13.5px;color:#8FA2A0;margin-bottom:7px}
+.url{font-size:13px;color:var(--teal-bright);font-weight:700;margin-top:12px}
+.fnote{border-top:1px solid #1E2A2B;margin-top:30px;padding-top:18px;font-size:12px;color:#6C7E7C}
+
+@media(prefers-reduced-motion:no-preference){
+  .draw{stroke-dasharray:var(--len);stroke-dashoffset:var(--len);animation:draw 2.8s ease forwards}
+  @keyframes draw{to{stroke-dashoffset:0}}
+  .float{animation:fl 8s ease-in-out infinite}
+  @keyframes fl{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+  .float2{animation:fl2 10s ease-in-out infinite}
+  @keyframes fl2{0%,100%{transform:translateY(0)}50%{transform:translateY(10px)}}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="logo"><span class="mark">1</span>onedesign</div>
+  <div class="links"><a href="#work">work</a><a href="#services">services</a><a href="#studio">studio</a><a href="#contact">contact</a></div>
+  <a class="cta-sm" href="#contact">start a project</a>
+</nav>
+
+<header class="hero">
+  <canvas id="ascii" class="stage" aria-hidden="true"></canvas>
+  <div class="scrim" aria-hidden="true"></div>
+  <div class="wrap inner">
+    <div class="eyebrow">branding &amp; creative studio</div>
+    <h1>ideas that<br><span class="accent">take shape.</span></h1>
+    <p class="lede">Brand identity, retail and environmental graphics. The thinking behind great signage, offered as a studio in its own right.</p>
+    <div class="btns"><a class="btn" href="#work">see the work</a><a class="btn soft" href="#contact">start a project</a></div>
+  </div>
+</header>
+
+<section class="wrap mani" id="studio">
+  <p><span class="dim">Most studios stop at the screen.</span> We design brands that have to survive the real world, <span class="accent">bolted to buildings, cut from steel, lit at night</span>, and still look right ten years on.</p>
+  <p class="sub">OneDesign grew out of Onesign & Digital, a signage manufacturer with fifty years of making behind it. Every identity we draw is tested against the question that matters: what does this look like three metres tall, in the rain, on a Tuesday.</p>
+</section>
+
+<section class="wrap svcs" id="services">
+  <div class="svc">
+    <svg viewBox="0 0 64 64"><path d="M10,50 C22,20 42,20 54,44"/></svg>
+    <div><h3>brand identity</h3><p>Names, marks and full systems with room to grow. Built to work everywhere, from a favicon to a fascia.</p></div>
+    <div class="go">identity work →</div>
+  </div>
+  <div class="svc">
+    <svg viewBox="0 0 64 64"><path d="M12,44 h40 M12,32 h28 M12,20 h34"/></svg>
+    <div><h3>retail branding</h3><p>Store environments that pull people in and hold them. Interiors, window schemes, menus and displays.</p></div>
+    <div class="go">retail work →</div>
+  </div>
+  <div class="svc">
+    <svg viewBox="0 0 64 64"><path d="M14,50 L32,14 L50,50 Z"/></svg>
+    <div><h3>environmental graphics</h3><p>Wayfinding, interpretation and large-format graphics that turn a space into an experience.</p></div>
+    <div class="go">environmental work →</div>
+  </div>
+</section>
+
+<section class="wrap shead" id="work">
+  <div><div class="lab">selected work</div><h2>recent shapes.</h2></div>
+  <a href="#">all projects →</a>
+</section>
+<section class="wrap work">
+  <a class="proj tall" href="#"><div class="ph"></div><div class="cap"><div class="t">community shop, sunderland</div><div class="d">environmental graphics, wayfinding, interior scheme</div></div></a>
+  <div class="stack">
+    <a class="proj short" href="#"><div class="ph"></div><div class="cap"><div class="t">dirty murphy's</div><div class="d">identity, aged brass fascia</div></div></a>
+    <a class="proj short" href="#"><div class="ph"></div><div class="cap"><div class="t">the tanning co</div><div class="d">retail branding, interior signage</div></div></a>
+  </div>
+</section>
+
+<section class="wrap"><div class="ribbon">
+  <svg viewBox="0 0 1100 300" preserveAspectRatio="xMidYMid slice"><path d="M-20,240 C180,80 380,300 580,160 S920,60 1120,200"/></svg>
+  <div class="in">
+    <h2>an idea is only finished when it is standing up.</h2>
+    <div class="rsteps">
+      <div class="rstep"><div class="n">01</div><div class="t">discover</div><div class="d">We get under the brand, the audience and the space it has to live in.</div></div>
+      <div class="rstep"><div class="n">02</div><div class="t">concept</div><div class="d">Routes explored wide, then the strongest idea drawn out and pushed.</div></div>
+      <div class="rstep"><div class="n">03</div><div class="t">craft</div><div class="d">Identity, artwork and guidelines built to apply anywhere, at any size.</div></div>
+      <div class="rstep"><div class="n">04</div><div class="t">make it real</div><div class="d">Our sister companies fabricate and install, so nothing is lost in handover.</div></div>
+    </div>
+  </div>
+</div></section>
+
+<section class="wrap note">
+  <div class="ph"><span>studio image placeholder / gateshead floor</span></div>
+  <div>
+    <h2>a studio with a factory attached.</h2>
+    <p>Most creative studios hand over artwork and hope. We walk downstairs. <b>OneLaser cuts our metalwork and OneSign installs the finished piece</b>, which means the concept you approve is the thing that ends up on the wall, to the millimetre.</p>
+    <p>Need fabrication or signage manufacturing? Our sister companies can help.</p>
+  </div>
+</section>
+
+<section class="wrap endcta" id="contact">
+  <h2>got something<br><span class="accent">to shape?</span></h2>
+  <a class="btn" href="#">start a project</a>
+</section>
+
+<footer><div class="wrap">
+  <div class="fgrid">
+    <div class="fcol"><div class="logo"><span class="mark">1</span>onedesign</div><p style="max-width:250px">The creative studio of One Group. Concept-first branding, built to become real.</p><div class="url">onedesignstudios.com</div></div>
+    <div class="fcol"><h5>site</h5><a href="#work">work</a><a href="#services">services</a><a href="#studio">studio</a><a href="#contact">contact</a></div>
+    <div class="fcol"><h5>our group</h5><a href="#">onesignanddigital.com</a><a href="#">onelasercutting.com</a></div>
+    <div class="fcol"><h5>contact</h5><p>D86 Princesway North</p><p>Team Valley, Gateshead NE11 0TU</p><p>0191 487 6767</p></div>
+  </div>
+  <div class="fnote">© 2026 One Group. OneDesign Studios is a trading brand of One Group.</div>
+</div></footer>
+
+<script>
+/* ASCII image engine. A brand picture (the One roundel plus a sweeping
+   gesture stroke) is drawn offscreen, blurred, and sampled; glyph density
+   maps to luminance so the characters literally form the image.
+   It breathes along its contours, and the cursor ripples it. */
+(function(){
+  const cv=document.getElementById('ascii'),hero=cv.parentElement,ctx=cv.getContext('2d');
+  const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const CELL=9, DPR=Math.min(devicePixelRatio||1,1.5);
+  let W,H,cols,rows,lum,mx=-999,my=-999,sx=0,sy=0;
+
+  // rich ramp: sparse dust -> line weights -> solid ink
+  const RAMP=[' ',' ','·','·',':','∙','~','≈','=','+','x','*','o','e','8','O','%','&','#','@','▓'];
+  const ACCENT=['✳','◦','∗'];
+
+  // the real Onesign icon, inlined (viewBox 27.08 x 24.64)
+  const ICON=new Path2D("M7.87.75c3.58-.98,7.42-1.01,10.95,0,5.38,1.53,8.29,6.23,8.26,11.65-.03,5.23-2.71,9.81-7.99,11.46l.03-19.46h-5.94c-.85,4.22-4.03,5.12-8.42,4.99l.04,4.9,7.57.03-.02,10.34c-6.39-.04-12.35-4.83-12.35-10.97C0,5.89,4.11,1.78,7.87.75Z");
+  const IW=27.08, IH=24.64;
+
+  function buildImage(){
+    // offscreen scene at cell resolution
+    const off=document.createElement('canvas');off.width=cols;off.height=rows;
+    const o=off.getContext('2d');
+    o.fillStyle='#000';o.fillRect(0,0,cols,rows);
+    o.strokeStyle='#fff';o.fillStyle='#fff';o.lineCap='round';
+
+    // place the mark right-of-centre, sized to the hero
+    const S=Math.min(cols,rows)*.72/IH;      // scale so icon height ~72% of grid
+    const ix=cols*.68-(IW*S)/2, iy=rows*.47-(IH*S)/2;
+
+    // sweeping gesture stroke, entering left and passing behind the mark
+    const cxp=ix+IW*S*.5, cyp=iy+IH*S*.5, R=IH*S*.5;
+    o.lineWidth=Math.max(2,R*.13);
+    o.beginPath();
+    o.moveTo(-cols*.05,rows*.8);
+    o.bezierCurveTo(cols*.2,rows*1.0, cols*.33,rows*.15, cxp-R*.95,cyp+R*.45);
+    o.bezierCurveTo(cxp-R*.1,cyp+R*1.25, cxp+R*1.55,cyp+R*.85, cxp+R*1.2,cyp-R*.4);
+    o.stroke();
+
+    // the icon itself: soft fill for tonal body, crisp outline for the silhouette
+    o.save();o.translate(ix,iy);o.scale(S,S);
+    o.globalAlpha=.72;o.fill(ICON);          // body reads as mid-tone texture
+    o.globalAlpha=1;o.lineWidth=1.4/S*2;o.stroke(ICON); // edge reads as solid ink
+    o.restore();
+
+    // soft glow pass so density falls off in gradients, not hard edges
+    o.filter='blur(1.6px)';o.drawImage(off,0,0);o.filter='none';
+
+    const d=o.getImageData(0,0,cols,rows).data;
+    lum=new Float32Array(cols*rows);
+    for(let i=0;i<cols*rows;i++)lum[i]=d[i*4]/255;
+  }
+
+  function size(){
+    W=hero.clientWidth;H=hero.clientHeight;
+    cv.width=W*DPR;cv.height=H*DPR;cv.style.width=W+'px';cv.style.height=H+'px';
+    ctx.setTransform(DPR,0,0,DPR,0,0);
+    cols=Math.ceil(W/CELL);rows=Math.ceil(H/CELL);
+    ctx.textAlign='center';ctx.textBaseline='middle';
+    buildImage();
+  }
+  size();addEventListener('resize',size);
+
+  hero.addEventListener('pointermove',e=>{const r=hero.getBoundingClientRect();mx=e.clientX-r.left;my=e.clientY-r.top});
+  hero.addEventListener('pointerleave',()=>{mx=-999;my=-999});
+
+  let t=0;
+  function frame(){
+    t+=.016;
+    sx+=((mx>-100?mx:W*.68)-sx)*.07; sy+=((my>-100?my:H*.46)-sy)*.07;
+    ctx.clearRect(0,0,W,H);let lastFb=-1;
+    for(let r=0;r<rows;r++)for(let c=0;c<cols;c++){
+      const L=lum[r*cols+c];
+      // faint ambient dust keeps the whole canvas alive
+      const dust=((c*29+r*53)%37===0)?.06:0;
+      let v=L+dust;
+      if(v<.03)continue;
+      let x=c*CELL+CELL/2, y=r*CELL+CELL/2;
+      // breathe: intensity shimmers along contours
+      v*= .82+.18*Math.sin(t*1.4 + L*9 + c*.12 - r*.09);
+      // cursor ripple: displace and brighten within reach
+      const d=Math.hypot(x-sx,y-sy), reach=Math.max(0,1-d/240);
+      if(reach>0){
+        const ang=Math.atan2(y-sy,x-sx), w=Math.sin(d*.045 - t*4)*reach*10;
+        x+=Math.cos(ang)*w; y+=Math.sin(ang)*w;
+        v=Math.min(1.15,v+reach*.5);
+      }
+      const idx=Math.min(RAMP.length-1,Math.floor(v*(RAMP.length-1)));
+      let ch=RAMP[idx];
+      if(v>.92 && (c+r*7)%29===0)ch=ACCENT[(c+r)%3]; // rare sparkles in the densest ink
+      // colour, inverted for the dark ground: dust in low steel,
+      // mid tones in bright teal, the densest ink in near-white light
+      const a=.18+v*.75;
+      ctx.fillStyle=v>.6?'rgba(216,245,248,'+a+')':(v>.3?'rgba(66,174,191,'+a+')':'rgba(122,142,140,'+(a*.7)+')');
+      const fb=v>.7?1:0;                        // two font buckets only,
+      if(fb!==lastFb){                          // switching per cell is costly
+        ctx.font=fb?'700 10px ui-monospace,SFMono-Regular,Consolas,monospace'
+                   :'400 8.5px ui-monospace,SFMono-Regular,Consolas,monospace';
+        lastFb=fb;
+      }
+      ctx.fillText(ch,x,y);
+    }
+    if(!reduced)requestAnimationFrame(frame);
+  }
+  frame(); // reduced motion renders one still: the full ASCII image, no loop
+})();
+</script>
+
+</body>
+</html>

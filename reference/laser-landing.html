@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OneLaser, precision laser cutting</title>
+<style>
+@font-face{font-family:'Gilroy';font-weight:400;src:url(data:font/ttf;base64,@FONT_REG@) format('truetype');font-display:swap}
+@font-face{font-family:'Gilroy';font-weight:700;src:url(data:font/ttf;base64,@FONT_BOLD@) format('truetype');font-display:swap}
+:root{
+  --paper:#FFFFFF;--wash:#F1F4F5;--ink:#0F1719;--steel:#5B6B70;--line:#DDE4E5;
+  --teal:#127A8C;--teal-deep:#0C5464;--teal-bright:#19A7BE;--nav:#0C1315;--r:6px;
+  --mono:'SFMono-Regular',ui-monospace,'Cascadia Mono',Consolas,monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--paper);color:var(--ink);font-family:'Gilroy',system-ui,sans-serif;-webkit-font-smoothing:antialiased;line-height:1.55}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--teal);color:#fff}
+.wrap{max-width:1160px;margin:0 auto;padding:0 26px}
+b,strong{font-weight:700}
+.mono{font-family:var(--mono);font-size:.86em;letter-spacing:.02em}
+
+/* nav */
+.nav{background:var(--nav);color:#fff;display:flex;justify-content:space-between;align-items:center;padding:16px 26px;position:sticky;top:0;z-index:20}
+.logo{display:flex;align-items:center;gap:9px;font-weight:700;font-size:20px}
+.logo .mark{width:22px;height:22px;border-radius:50%;border:2px solid var(--teal-bright);display:inline-flex;align-items:center;justify-content:center;font-size:11px;color:var(--teal-bright)}
+.nav .links{display:flex;gap:22px;font-size:14px;color:#BFCCCF}
+.nav .links a:hover{color:#fff}
+.cta-sm{background:var(--teal);color:#fff;padding:8px 18px;border-radius:var(--r);font-weight:700;font-size:13px;transition:.15s}
+.cta-sm:hover{background:var(--teal-bright)}
+@media(max-width:760px){.nav .links{display:none}}
+
+/* hero */
+.hero{position:relative;min-height:620px;display:flex;align-items:center;overflow:hidden;background:#0B1214;border-bottom:1px solid var(--line)}
+.stage{position:absolute;inset:0;width:100%;height:100%}
+.scrim{position:absolute;inset:0;z-index:2;pointer-events:none;background:linear-gradient(90deg,rgba(11,18,20,.92) 0%,rgba(11,18,20,.62) 40%,rgba(11,18,20,.08) 68%,rgba(11,18,20,0) 80%)}
+.hero h1{color:#F4F8F9}
+.hero h1 .accent{color:#2FD4EE}
+.hero .eyebrow{color:#19A7BE}
+.hero .lede{color:#93A7AC}
+.hero .btn.ghost{border-color:#263438;color:#E7EEF0}
+.hero .btn.ghost:hover{border-color:#2FD4EE;color:#2FD4EE}
+.hero .readout div{color:#6E8287}
+.hero .readout b{color:#F4F8F9}
+.hero .inner{position:relative;z-index:3;padding:70px 0;width:100%}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--teal);font-weight:700;margin-bottom:20px}
+h1{font-weight:700;line-height:1.0;letter-spacing:-.02em;font-size:clamp(44px,7.6vw,92px)}
+h1 .accent{color:var(--teal)}
+.lede{max-width:520px;margin-top:20px;color:var(--steel);font-size:16px}
+.btns{display:flex;gap:12px;margin-top:30px;flex-wrap:wrap}
+.btn{background:var(--teal);color:#fff;padding:14px 26px;border-radius:var(--r);font-weight:700;font-size:14px;transition:.15s}
+.btn:hover{background:var(--teal-deep)}
+.btn.ghost{background:transparent;border:1.5px solid var(--line);color:var(--ink)}
+.btn.ghost:hover{border-color:var(--teal);color:var(--teal)}
+.readout{display:flex;gap:26px;margin-top:34px;flex-wrap:wrap}
+.readout div{font-family:var(--mono);font-size:12px;color:var(--steel)}
+.readout b{display:block;color:var(--ink);font-size:15px;font-family:'Gilroy';letter-spacing:0}
+
+/* spec strip */
+.specs-wrap{border-bottom:1px solid var(--line)}
+.specs{display:grid;grid-template-columns:repeat(4,1fr)}
+@media(max-width:820px){.specs{grid-template-columns:repeat(2,1fr)}}
+.spec{padding:30px 26px;border-left:1px solid var(--line)}
+.spec:first-child{border-left:none;padding-left:0}
+@media(max-width:820px){.spec:nth-child(3){border-left:none;padding-left:0}}
+.spec .k{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--teal);margin-bottom:8px}
+.spec .v{font-weight:700;font-size:26px;letter-spacing:-.01em}
+.spec .u{font-size:13px;color:var(--steel)}
+
+/* section head */
+.shead{padding:76px 0 8px}
+.shead .lab{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--teal)}
+.shead h2{font-weight:700;font-size:clamp(28px,4.6vw,46px);letter-spacing:-.015em;margin-top:8px}
+.shead p{max-width:600px;color:var(--steel);margin-top:14px;font-size:15px}
+
+/* process */
+.proc{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;padding:44px 0 8px}
+@media(max-width:860px){.proc{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.proc{grid-template-columns:1fr}}
+.step{background:var(--nav);color:#fff;border-radius:var(--r);padding:22px;min-height:200px;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden}
+.step::after{content:"";position:absolute;top:0;right:0;width:60px;height:60px;background:linear-gradient(225deg,var(--teal-deep),transparent);opacity:.6}
+.step .n{font-family:var(--mono);font-weight:700;font-size:13px;color:var(--teal-bright)}
+.step .t{font-weight:700;font-size:18px}
+.step .d{font-size:12.5px;color:#AFBEC2;margin-top:6px}
+
+/* materials */
+.mats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;padding:44px 0 8px}
+@media(max-width:820px){.mats{grid-template-columns:1fr}}
+.mat{border:1px solid var(--line);border-radius:var(--r);overflow:hidden;transition:.15s}
+.mat:hover{border-color:var(--teal)}
+.mat .ph{height:150px;background:linear-gradient(135deg,var(--teal-deep),var(--teal));opacity:.85;display:flex;align-items:flex-end;padding:14px}
+.mat .ph span{font-family:var(--mono);font-size:10.5px;color:#fff;letter-spacing:.14em;text-transform:uppercase;opacity:.85}
+.mat .bd{padding:18px 20px}
+.mat h4{font-weight:700;font-size:17px}
+.mat table{width:100%;margin-top:12px;border-collapse:collapse;font-family:var(--mono);font-size:12px;color:var(--steel)}
+.mat td{padding:5px 0;border-top:1px solid var(--line)}
+.mat td:last-child{text-align:right;color:var(--ink);font-weight:700;font-family:'Gilroy'}
+
+/* upload band */
+.band{background:var(--nav);color:#fff;border-radius:var(--r);margin:70px 0 0;padding:44px 38px;position:relative;overflow:hidden}
+.band .path{position:absolute;inset:0;opacity:.35}
+.band .path path{fill:none;stroke:var(--teal-bright);stroke-width:1.4}
+.band .in{position:relative;display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap}
+.band h3{font-weight:700;font-size:clamp(24px,3.6vw,36px);letter-spacing:-.015em}
+.band p{color:#AFC2C6;font-size:14px;margin-top:8px;max-width:440px}
+.band .steps{display:flex;gap:18px;margin-top:16px;font-family:var(--mono);font-size:11.5px;color:var(--teal-bright)}
+.band .btn{background:var(--teal);white-space:nowrap}
+.band .btn:hover{background:var(--teal-bright)}
+
+/* recent cuts */
+.cuts{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;padding:44px 0 8px}
+@media(max-width:820px){.cuts{grid-template-columns:1fr}}
+.cut{border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.cut .ph{height:190px;background:linear-gradient(160deg,#20323680,var(--teal-deep));display:flex;align-items:flex-end;padding:14px}
+.cut .ph span{font-family:var(--mono);font-size:10.5px;color:#fff;letter-spacing:.12em;text-transform:uppercase;opacity:.8}
+.cut .bd{padding:16px 18px;display:flex;justify-content:space-between;align-items:center}
+.cut h4{font-weight:700;font-size:15.5px}
+.cut .m{font-family:var(--mono);font-size:11px;color:var(--steel)}
+.cut .go{color:var(--teal);font-weight:700}
+
+/* footer */
+footer{background:var(--nav);color:#BFCCCF;margin-top:70px;padding:44px 0 28px}
+.fgrid{display:flex;justify-content:space-between;gap:30px;flex-wrap:wrap}
+footer .logo{color:#fff;margin-bottom:10px}
+.fcol h5{color:#fff;font-size:11px;letter-spacing:.16em;text-transform:uppercase;margin-bottom:12px;font-family:var(--mono)}
+.fcol a,.fcol p{display:block;font-size:13.5px;color:#93A4A8;margin-bottom:7px}
+.url{font-family:var(--mono);font-size:12px;color:var(--teal-bright);margin-top:12px}
+.fnote{border-top:1px solid #1B2629;margin-top:30px;padding-top:18px;font-size:12px;color:#69797D;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.fnote .group a{color:#93A4A8;margin-left:14px}
+
+@media(prefers-reduced-motion:no-preference){
+  .draw{stroke-dasharray:var(--len);stroke-dashoffset:var(--len);animation:draw 2.6s ease forwards}
+  @keyframes draw{to{stroke-dashoffset:0}}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="logo"><span class="mark">1</span>onelaser</div>
+  <div class="links"><a href="#cap">capabilities</a><a href="#mat">materials</a><a href="#work">recent cuts</a><a href="#quote">upload</a></div>
+  <a class="cta-sm" href="#quote">get a price</a>
+</nav>
+
+<header class="hero">
+  <svg id="cutstage" class="stage" aria-hidden="true"></svg>
+  <div class="scrim" aria-hidden="true"></div>
+  <div class="wrap inner">
+    <div class="eyebrow">precision laser cutting / gateshead</div>
+    <h1>cut clean,<br><span class="accent">every pass.</span></h1>
+    <p class="lede">3kW fibre laser cutting in stainless, aluminium and mild steel. Upload a DXF, get a price, and take delivery of parts that fit first time. From the team behind Onesign & Digital.</p>
+    <div class="btns"><a class="btn" href="#quote">upload a DXF</a><a class="btn ghost" href="#cap">see capabilities</a></div>
+    <div class="readout">
+      <div>source<br><b>3kW fibre</b></div>
+      <div>kerf from<br><b>0.15 mm</b></div>
+      <div>tolerance<br><b>±0.1 mm</b></div>
+      <div>turnaround<br><b>from 48 hrs</b></div>
+    </div>
+  </div>
+</header>
+
+<section class="specs-wrap" id="cap"><div class="wrap"><div class="specs">
+  <div class="spec"><div class="k">stainless up to</div><div class="v">12<span class="u"> mm</span></div></div>
+  <div class="spec"><div class="k">aluminium up to</div><div class="v">10<span class="u"> mm</span></div></div>
+  <div class="spec"><div class="k">mild steel up to</div><div class="v">20<span class="u"> mm</span></div></div>
+  <div class="spec"><div class="k">bed size</div><div class="v">3 × 1.5<span class="u"> m</span></div></div>
+</div></div></section>
+
+<section class="wrap shead">
+  <div class="lab">process</div>
+  <h2>drawing to delivery, four steps.</h2>
+  <p>No middlemen and no mystery. Your file goes from quote to cut on the same floor, checked at every stage by the people running the machine.</p>
+</section>
+<section class="wrap"><div class="proc">
+  <div class="step"><div class="n">01</div><div><div class="t">quote</div><div class="d">Upload a DXF or DWG. Price comes from the true cut length, pierces and material, not a guess.</div></div></div>
+  <div class="step"><div class="n">02</div><div><div class="t">nest</div><div class="d">Parts nested for yield, lead-ins and micro-tabs set so edges stay clean and parts stay flat.</div></div></div>
+  <div class="step"><div class="n">03</div><div><div class="t">cut</div><div class="d">Fibre laser holds ±0.1 mm across the sheet. Burr-free edges, tight internal radii, crisp detail.</div></div></div>
+  <div class="step"><div class="n">04</div><div><div class="t">finish</div><div class="d">Deburr, fold and powder coat in house. Parts arrive ready to fit, not ready for more work.</div></div></div>
+</div></section>
+
+<section class="wrap shead" id="mat">
+  <div class="lab">materials</div>
+  <h2>what we profile every day.</h2>
+</section>
+<section class="wrap"><div class="mats">
+  <div class="mat"><div class="ph"><span>brushed 304 / mirror 316</span></div><div class="bd">
+    <h4>stainless steel</h4>
+    <table><tr><td>thickness</td><td>0.9 to 12 mm</td></tr><tr><td>grades</td><td>304, 316</td></tr><tr><td>typical use</td><td>facings, brackets, architectural</td></tr></table>
+  </div></div>
+  <div class="mat"><div class="ph"><span>5083 / 5754 / composite</span></div><div class="bd">
+    <h4>aluminium</h4>
+    <table><tr><td>thickness</td><td>0.9 to 10 mm</td></tr><tr><td>grades</td><td>5083, 5754</td></tr><tr><td>typical use</td><td>trays, panels, lightweight parts</td></tr></table>
+  </div></div>
+  <div class="mat"><div class="ph"><span>cr4 / s275 / zintec</span></div><div class="bd">
+    <h4>mild steel</h4>
+    <table><tr><td>thickness</td><td>0.9 to 20 mm</td></tr><tr><td>grades</td><td>CR4, S275</td></tr><tr><td>typical use</td><td>structural, OEM, batch work</td></tr></table>
+  </div></div>
+</div></section>
+
+<section class="wrap" id="quote"><div class="band">
+  <svg class="path" viewBox="0 0 1100 220" preserveAspectRatio="xMidYMid slice"><path d="M-10,170 H300 L360,110 H740 L800,170 H1120"/></svg>
+  <div class="in">
+    <div>
+      <h3>got a drawing ready?</h3>
+      <p>Drop a DXF and get a price back the same working day. No minimum order, no drawn-out quoting chain.</p>
+      <div class="steps"><span>01 upload</span><span>02 price</span><span>03 cut</span><span>04 delivered</span></div>
+    </div>
+    <a class="btn" href="#">upload a DXF</a>
+  </div>
+</div></section>
+
+<section class="wrap shead" id="work">
+  <div class="lab">recent cuts</div>
+  <h2>off the bed this month.</h2>
+</section>
+<section class="wrap"><div class="cuts">
+  <div class="cut"><div class="ph"><span>316 stainless / 3 mm</span></div><div class="bd"><div><h4>architectural fin set</h4><div class="m">JOB 1147 / 96 parts</div></div><span class="go">→</span></div></div>
+  <div class="cut"><div class="ph"><span>5083 aluminium / 5 mm</span></div><div class="bd"><div><h4>illuminated tray panels</h4><div class="m">JOB 1152 / 40 parts</div></div><span class="go">→</span></div></div>
+  <div class="cut"><div class="ph"><span>mild steel / 10 mm</span></div><div class="bd"><div><h4>OEM bracket batch</h4><div class="m">JOB 1158 / 250 parts</div></div><span class="go">→</span></div></div>
+</div></section>
+
+<footer><div class="wrap">
+  <div class="fgrid">
+    <div class="fcol"><div class="logo"><span class="mark">1</span>onelaser</div><p style="max-width:250px">Precision laser cutting from the One Group floor in Gateshead. Sister company to Onesign & Digital and OneDesign Studios.</p><div class="url">onelasercutting.com</div></div>
+    <div class="fcol"><h5>site</h5><a href="#cap">capabilities</a><a href="#mat">materials</a><a href="#work">recent cuts</a><a href="#quote">upload a DXF</a></div>
+    <div class="fcol"><h5>our group</h5><a href="#">onesignanddigital.com</a><a href="#">onedesignstudios.com</a></div>
+    <div class="fcol"><h5>contact</h5><p>D86 Princesway North</p><p>Team Valley, Gateshead NE11 0TU</p><p>0191 487 6767</p></div>
+  </div>
+  <div class="fnote"><span>© 2026 One Group. Need finished signage from your components? Visit OneSign.</span><span class="group"><a href="#">privacy</a><a href="#">terms</a></span></div>
+</div></footer>
+
+<script>
+/* The beam.
+   Auto: one continuous cut sweeps the sheet, white-hot at the head,
+   cooling through cyan into a settled seam. Interactive: enter the
+   hero and the beam hands over to you; the endpoint follows the
+   cursor and cuts a live seam along your path. Leave, and your seam
+   cools while the machine resumes its own passes. */
+(function(){
+  const svg=document.getElementById('cutstage'),hero=svg.parentElement;
+  const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const NS='http://www.w3.org/2000/svg';
+  let W,H,raf,cut,trail,embers=[];
+  let mode='auto',tx=0,ty=0,hx=0,hy=0,pts=[];
+
+  const el=(n,a,p)=>{const e=document.createElementNS(NS,n);for(const k in a)e.setAttribute(k,a[k]);(p||svg).appendChild(e);return e};
+  const rnd=(a,b)=>a+Math.random()*(b-a);
+
+  function sweep(){
+    const y0=H*rnd(.42,.58), amp=H*rnd(.10,.16), ph=rnd(0,6.28), sw=rnd(.7,1.3);
+    let d='';const steps=170;
+    for(let i=0;i<=steps;i++){
+      const x=-W*.02+(W*1.06)*i/steps, t=i/steps;
+      const y=y0+Math.sin(t*3.1*sw+ph)*amp*(0.4+0.6*Math.sin(t*Math.PI))
+              -Math.sin(t*Math.PI)*H*.06;
+      d+=(i?'L':'M')+x.toFixed(1)+' '+y.toFixed(1);
+    }
+    return d;
+  }
+
+  function build(){
+    svg.innerHTML='';embers=[];pts=[];
+    W=hero.clientWidth;H=hero.clientHeight;
+    svg.setAttribute('viewBox','0 0 '+W+' '+H);
+
+    const defs=el('defs',{});
+    [['bloom',3],['bloom2',7],['bloom3',14]].forEach(g=>{
+      const f=el('filter',{id:g[0],x:'-400%',y:'-400%',width:'900%',height:'900%'},defs);
+      el('feGaussianBlur',{stdDeviation:g[1],result:'b'},f);
+      const m=el('feMerge',{},f);el('feMergeNode',{in:'b'},m);el('feMergeNode',{in:'SourceGraphic'},m);
+    });
+    const bgGlow=el('radialGradient',{id:'bg',cx:.72,cy:.42,r:.75},defs);
+    el('stop',{offset:0,'stop-color':'#123840','stop-opacity':.8},bgGlow);
+    el('stop',{offset:.6,'stop-color':'#0D2126','stop-opacity':.35},bgGlow);
+    el('stop',{offset:1,'stop-color':'#0B1214','stop-opacity':0},bgGlow);
+    const beamGrad=el('linearGradient',{id:'beam',x1:0,y1:0,x2:0,y2:1},defs);
+    el('stop',{offset:0,'stop-color':'#2FD4EE','stop-opacity':0},beamGrad);
+    el('stop',{offset:.55,'stop-color':'#2FD4EE','stop-opacity':.55},beamGrad);
+    el('stop',{offset:1,'stop-color':'#EFFDFF','stop-opacity':.95},beamGrad);
+
+    el('rect',{x:0,y:0,width:W,height:H,fill:'url(#bg)'});
+    const brush=el('g',{stroke:'#FFFFFF','stroke-width':1,opacity:.03});
+    for(let y=0;y<H;y+=64)el('line',{x1:0,y1:y,x2:W,y2:y},brush);
+
+    for(let i=0;i<2;i++)el('path',{d:sweep(),fill:'none',stroke:'#14343B','stroke-width':1,opacity:.55});
+
+    newCut();
+
+    /* the visitor's own seam, three heat layers on one live path */
+    trail={
+      settle:el('path',{d:'',fill:'none',stroke:'#1E6E7E','stroke-width':1.4,'stroke-linecap':'round','stroke-linejoin':'round'}),
+      cool:el('path',{d:'',fill:'none',stroke:'#2FD4EE','stroke-width':2.8,'stroke-linecap':'round','stroke-linejoin':'round',filter:'url(#bloom)'}),
+      hot:el('path',{d:'',fill:'none',stroke:'#F4FEFF','stroke-width':1.6,'stroke-linecap':'round','stroke-linejoin':'round',filter:'url(#bloom2)'})
+    };
+
+    cut.beam=el('rect',{x:0,y:0,width:2.2,height:0,fill:'url(#beam)',filter:'url(#bloom2)'});
+    cut.src =el('circle',{cx:0,cy:-4,r:2.4,fill:'#EFFDFF',filter:'url(#bloom)',opacity:.9});
+    cut.headGlow=el('circle',{r:14,fill:'#2FD4EE',opacity:.16,filter:'url(#bloom3)'});
+    cut.head=el('circle',{r:2.4,fill:'#FFFFFF',filter:'url(#bloom)'});
+  }
+
+  function newCut(){
+    const d=sweep();
+    if(cut){cut.ghost.remove();cut.settle.remove();cut.cool.remove();cut.hot.remove()}
+    const ghost=el('path',{d,fill:'none',stroke:'#1C3A41','stroke-width':1,opacity:.5,'stroke-dasharray':'1 7'});
+    const settle=el('path',{d,fill:'none',stroke:'#1E6E7E','stroke-width':1.4,'stroke-linecap':'round'});
+    const cool=el('path',{d,fill:'none',stroke:'#2FD4EE','stroke-width':2.8,'stroke-linecap':'round',filter:'url(#bloom)'});
+    const hot=el('path',{d,fill:'none',stroke:'#F4FEFF','stroke-width':1.6,'stroke-linecap':'round',filter:'url(#bloom2)'});
+    const L=settle.getTotalLength(),COOL=Math.min(220,L*.22),HOT=54;
+    settle.style.strokeDasharray=L;settle.style.strokeDashoffset=L;
+    cool.style.strokeDasharray=COOL+' '+L;cool.style.strokeDashoffset=COOL;
+    hot.style.strokeDasharray=HOT+' '+L;hot.style.strokeDashoffset=HOT;
+    cut={...(cut||{}),ghost,settle,cool,hot,L,COOL,HOT,prog:0};
+  }
+
+  function ember(x,y){
+    if(embers.length>16)return;
+    embers.push({e:el('circle',{r:rnd(.7,1.5),fill:Math.random()<.7?'#7FE7F6':'#EFFDFF',filter:'url(#bloom)'}),
+      x,y,vx:rnd(-.5,.9),vy:rnd(-.9,-.25),life:1,decay:rnd(.006,.014)});
+  }
+
+  function placeBeam(x,y,flick){
+    cut.beam.setAttribute('x',x-1.1);
+    cut.beam.setAttribute('height',Math.max(0,y-2));
+    cut.beam.setAttribute('opacity',flick*.9);
+    cut.src.setAttribute('cx',x);
+    cut.head.setAttribute('cx',x);cut.head.setAttribute('cy',y);
+    cut.headGlow.setAttribute('cx',x);cut.headGlow.setAttribute('cy',y);
+    cut.headGlow.setAttribute('opacity',.1+.1*flick);
+  }
+  function beamOn(on){
+    ['beam','src','head'].forEach(k=>cut[k].setAttribute('opacity',on?.9:0));
+    if(!on)cut.headGlow.setAttribute('opacity',0);
+  }
+  function fadeTrail(){
+    [['hot',1.2],['cool',2.4],['settle',3.4]].forEach(f=>{
+      trail[f[0]].style.transition='opacity '+f[1]+'s ease';
+      trail[f[0]].setAttribute('opacity',0);
+    });
+    setTimeout(()=>{pts=[];['hot','cool','settle'].forEach(k=>{
+      trail[k].setAttribute('d','');trail[k].style.transition='';trail[k].setAttribute('opacity',1);
+    })},3500);
+  }
+
+  /* hand the beam to the visitor */
+  if(!reduced){
+    hero.addEventListener('pointerenter',e=>{
+      const r=hero.getBoundingClientRect();
+      tx=e.clientX-r.left;ty=e.clientY-r.top;
+      const p=cut.settle.getPointAtLength(cut.prog);hx=p.x;hy=p.y;  /* continuity: hand-over from the auto head */
+      mode='user';pts=[[hx,hy]];
+      cut.cool.style.transition='opacity .5s ease';cut.cool.setAttribute('opacity',0);
+      cut.hot.style.transition='opacity .3s ease';cut.hot.setAttribute('opacity',0);
+      beamOn(true);
+    });
+    hero.addEventListener('pointermove',e=>{
+      const r=hero.getBoundingClientRect();
+      tx=e.clientX-r.left;ty=e.clientY-r.top;
+    });
+    hero.addEventListener('pointerleave',()=>{
+      mode='auto';fadeTrail();beamOn(false);
+      setTimeout(()=>{newCut();
+        cut.cool.style.transition='';cut.cool.setAttribute('opacity',1);
+        cut.hot.style.transition='';cut.hot.setAttribute('opacity',1);
+        beamOn(true)},900);
+    });
+  }
+
+  function run(){
+    let t=0,holding=0;
+    function tick(){
+      t+=.016;
+      for(let i=embers.length-1;i>=0;i--){const s=embers[i];
+        s.x+=s.vx;s.y+=s.vy;s.vy*=.995;s.life-=s.decay;
+        if(s.life<=0){s.e.remove();embers.splice(i,1);continue}
+        s.e.setAttribute('cx',s.x);s.e.setAttribute('cy',s.y);
+        s.e.setAttribute('opacity',s.life*.85);
+      }
+      const flick=.8+.2*Math.sin(t*47)+.06*Math.sin(t*137);
+
+      if(mode==='user'){
+        /* weighted head: the machine follows you, it doesn't teleport */
+        hx+=(tx-hx)*.16; hy+=(ty-hy)*.16;
+        const last=pts[pts.length-1];
+        if(!last||Math.hypot(hx-last[0],hy-last[1])>3.5){
+          pts.push([hx,hy]);
+          if(pts.length>650)pts.shift();
+          const d='M'+pts.map(p=>p[0].toFixed(1)+' '+p[1].toFixed(1)).join('L');
+          trail.settle.setAttribute('d',d);
+          trail.cool.setAttribute('d',d);trail.hot.setAttribute('d',d);
+          const L=trail.settle.getTotalLength(),COOL=Math.min(220,L),HOT=Math.min(54,L);
+          trail.cool.style.strokeDasharray=COOL+' '+L;trail.cool.style.strokeDashoffset=COOL-L;
+          trail.hot.style.strokeDasharray=HOT+' '+L;trail.hot.style.strokeDashoffset=HOT-L;
+        }
+        placeBeam(hx,hy,flick);
+        if(Math.random()<.4)ember(hx,hy);
+        raf=requestAnimationFrame(tick);return;
+      }
+
+      if(holding>0){
+        holding--;
+        if(holding===0){newCut();cut.prog=0}
+        raf=requestAnimationFrame(tick);return;
+      }
+      const k=cut.prog/cut.L, ease=.35+.65*Math.sin(Math.PI*Math.min(1,Math.max(.02,k)));
+      cut.prog=Math.min(cut.L,cut.prog+(2.6+4.6*ease));
+      cut.settle.style.strokeDashoffset=cut.L-cut.prog;
+      cut.cool.style.strokeDashoffset=cut.COOL-cut.prog;
+      cut.hot.style.strokeDashoffset=cut.HOT-cut.prog;
+      const p=cut.settle.getPointAtLength(cut.prog);
+      placeBeam(p.x,p.y,flick);
+      if(Math.random()<.4)ember(p.x,p.y);
+
+      if(cut.prog>=cut.L){
+        beamOn(false);
+        cut.cool.style.transition='opacity 2.4s ease';cut.cool.setAttribute('opacity',0);
+        cut.hot.style.transition='opacity 1.2s ease';cut.hot.setAttribute('opacity',0);
+        holding=170;
+        setTimeout(()=>{if(mode==='auto'){
+          cut.cool.style.transition='';cut.hot.style.transition='';
+          beamOn(true)}},170*16);
+      }
+      raf=requestAnimationFrame(tick);
+    }
+    raf=requestAnimationFrame(tick);
+  }
+
+  function init(){
+    cancelAnimationFrame(raf);build();
+    if(reduced){
+      cut.settle.style.strokeDashoffset=0;
+      cut.cool.style.strokeDasharray='none';cut.cool.setAttribute('opacity',.25);
+      cut.hot.setAttribute('opacity',0);
+      beamOn(false);
+    } else run();
+  }
+  init();
+  let rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(init,150)});
+})();
+</script>
+</body>
+</html>
