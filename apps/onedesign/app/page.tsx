@@ -4,9 +4,9 @@ import Link from 'next/link';
 import { Button, Container, SectionHead } from '@onegroup/shared';
 
 import { AsciiHero } from '../components/AsciiHero';
+import { BentoWorkGrid } from '../components/BentoWorkGrid';
 import { Faq } from '../components/Faq';
 import { SiteFooter, SiteNav } from '../components/SiteChrome';
-import { WorkGrid } from '../components/WorkGrid';
 
 import styles from './page.module.css';
 
@@ -116,21 +116,27 @@ export default function HomePage() {
           title="recent shapes."
           action={{ label: 'all projects →', href: '/work' }}
         />
-        <WorkGrid
+        <BentoWorkGrid
           entries={[
             {
               title: 'community shop, sunderland',
               description: 'environmental graphics, wayfinding, interior scheme',
+              outcome: 'A big retail shed turned into somewhere you would happily spend your morning.',
+              tags: ['wayfinding', 'interior scheme', 'made real by OneSign'],
               href: '/work/community-shop-sunderland',
             },
             {
               title: "dirty murphy's",
               description: 'identity, aged brass fascia',
+              outcome: 'A new bar with an eighty-year-old soul, in aged brass that only gets better.',
+              tags: ['identity', 'aged brass fascia', 'cut by OneLaser'],
               href: '/work/dirty-murphys',
             },
             {
               title: 'the tanning co',
               description: 'retail branding, interior signage',
+              outcome: 'Retail branding with warmth built in; the full story is coming soon.',
+              tags: ['retail branding', 'interior signage'],
               href: '/work',
             },
           ]}

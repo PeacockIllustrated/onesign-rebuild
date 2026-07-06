@@ -162,6 +162,15 @@ const pages = [
     lines: ['40 tray panels,', 'every aperture true.'],
     accentLine: 1,
   },
+  /* Flagship, structure only. TODO: update the eyebrow with the real
+     job number and material once the Specialty Services job sheet is
+     supplied (content/case-studies/specialty-services.ts). */
+  {
+    name: 'recent-cuts-specialty-services',
+    eyebrow: 'flagship case study / specialty services',
+    lines: ['the specialty services piece,', 'drawing to in situ.'],
+    accentLine: 1,
+  },
 ];
 
 mkdirSync(outDir, { recursive: true });

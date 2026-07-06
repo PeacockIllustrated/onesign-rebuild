@@ -10,6 +10,7 @@ import type { ReactNode } from 'react';
 import type { ImageSlot, LaserCaseStudy as LaserCaseStudyData } from '@onegroup/shared';
 import { Button, Container } from '@onegroup/shared';
 
+import { CutBuildHero } from './CutBuildHero';
 import styles from './LaserCaseStudy.module.css';
 
 /** Render our own content strings that may carry <b> emphasis markers. */
@@ -126,8 +127,13 @@ export function LaserCaseStudy({ cs }: { cs: LaserCaseStudyData }) {
         </Container>
       </header>
 
+      {/* v2 (docs/v2-interactions.md): a study with a profileSvg gets
+          the automated cut-and-build hero; otherwise the static
+          reference-style hero (photography once supplied). */}
       <div className={styles.heroimg}>
-        {cs.heroImage?.src ? (
+        {cs.profileSvg ? (
+          <CutBuildHero profile={cs.profileSvg} />
+        ) : cs.heroImage?.src ? (
           <img src={cs.heroImage.src} alt={cs.heroImage.alt ?? ''} />
         ) : (
           <HeroScene />

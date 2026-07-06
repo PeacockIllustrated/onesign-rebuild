@@ -48,6 +48,11 @@ const cards = [
     eyebrow: 'case study',
     lines: [["dirty murphy's", true]],
   },
+  {
+    file: 'work-tanglewood-equestrian',
+    eyebrow: 'case study',
+    lines: [['tanglewood'], ['equestrian', true]],
+  },
 ];
 
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/'/g, '&#39;');

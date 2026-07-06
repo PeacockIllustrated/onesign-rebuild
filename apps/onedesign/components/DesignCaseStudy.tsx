@@ -2,8 +2,12 @@ import type { CSSProperties, ReactNode } from 'react';
 import Link from 'next/link';
 
 import type { DesignCaseStudy as DesignCaseStudyData, ImageSlot } from '@onegroup/shared';
-import { Button, Container, cx } from '@onegroup/shared';
+import { Button, Container, cx, iconCell } from '@onegroup/shared';
 
+import { resolveTakeoverAccent } from '../lib/takeover';
+import { AsciiHero } from './AsciiHero';
+import { BrandTakeover } from './BrandTakeover';
+import { getCaseDisplayFont } from './caseDisplayFonts';
 import { accented, emphasis } from './emphasis';
 import styles from './DesignCaseStudy.module.css';
 
@@ -43,6 +47,17 @@ function linkSisters(text: string): ReactNode {
   });
 }
 
+/** Parse an SVG viewBox string into the width/height the ASCII engine samples. */
+function viewBoxSize(viewBox: string): { width: number; height: number } {
+  const parts = viewBox.trim().split(/[\s,]+/).map(Number);
+  const width = parts[2];
+  const height = parts[3];
+  return {
+    width: width && width > 0 ? width : 1,
+    height: height && height > 0 ? height : 1,
+  };
+}
+
 function Moment({ slot }: { slot: ImageSlot }) {
   return (
     <div className={cx(styles.moment, slot.variant === 'warm' && styles.warm)}>
@@ -62,16 +77,43 @@ export function DesignCaseStudy({ cs }: { cs: DesignCaseStudyData }) {
 
   const [firstMoment, ...duoMoments] = cs.moments ?? [];
 
+  /* v2 scroll-adaptive brand takeover (docs/v2-interactions.md). The
+     accent is contrast-checked here on the server; a failing accent is
+     dropped so the chrome keeps OneDesign teal (font may still apply). */
+  const takeover = cs.brand
+    ? {
+        accent: resolveTakeoverAccent(cs.brand.accent) ?? undefined,
+        displayFontFamily: getCaseDisplayFont(cs.brand.displayFont)?.family,
+      }
+    : null;
+
   return (
     <article className={styles.root} style={paletteVars}>
       <header className={styles.title}>
-        <svg viewBox="0 0 1200 420" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-          <path
-            className={styles.draw}
-            style={{ '--len': 2100 } as CSSProperties}
-            d="M-30,330 C200,140 420,420 640,260 S980,120 1230,300"
-          />
-        </svg>
+        {cs.iconSvg ? (
+          /* v2 ASCII case hero: the landing engine sampling the client's
+             icon (path + viewBox from content), per-case CELL override.
+             Same dark band, glyph mapping, cursor ripple, reduced-motion
+             still and IntersectionObserver pause as the landing; the
+             canvas is aria-hidden decoration behind the semantic copy,
+             below the legibility scrim. */
+          <>
+            <AsciiHero
+              className={styles.titleStage}
+              icon={{ path: cs.iconSvg.path, ...viewBoxSize(cs.iconSvg.viewBox) }}
+              cell={iconCell(cs.iconSvg)}
+            />
+            <div className={styles.titleScrim} aria-hidden="true" />
+          </>
+        ) : (
+          <svg viewBox="0 0 1200 420" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+            <path
+              className={styles.draw}
+              style={{ '--len': 2100 } as CSSProperties}
+              d="M-30,330 C200,140 420,420 640,260 S980,120 1230,300"
+            />
+          </svg>
+        )}
         <Container width="case" className={styles.titleIn}>
           <div className={styles.kind}>{cs.kicker}</div>
           <h1 className={styles.h1}>{cs.title}</h1>
@@ -115,6 +157,11 @@ export function DesignCaseStudy({ cs }: { cs: DesignCaseStudyData }) {
         <div className={styles.refl} aria-hidden="true" />
         {cs.heroCaption && <div className={styles.bleedCap}>{cs.heroCaption}</div>}
       </div>
+
+      {/* narrative start: the takeover sentinel sits exactly here */}
+      {takeover && (
+        <BrandTakeover accent={takeover.accent} displayFontFamily={takeover.displayFontFamily} />
+      )}
 
       <Container width="narrative" className={styles.story}>
         {cs.chapters.map((chap) => (

@@ -34,3 +34,61 @@ b,
 strong {
   font-weight: 700;
 }
+
+/* ============================================================
+   v2 scroll-adaptive brand takeover (docs/v2-interactions.md).
+   BrandTakeover.tsx stamps data-case-takeover="on" onto <body>
+   once the reader scrolls into a case study narrative, plus the
+   inline inputs --takeover-accent (contrast-checked server-side,
+   lib/takeover.ts) and --takeover-display (per-case next/font
+   family, components/caseDisplayFonts.ts).
+
+   Guardrails: only colour and display type change. Body text
+   stays Gilroy (--font-body is never touched), layout and
+   spacing are untouched, and a missing/failed accent leaves the
+   OneDesign teal set exactly as it was.
+   ============================================================ */
+
+/* Registered so the accent swap transitions as a colour, not a snap.
+   Browsers without @property fall back to an instant swap. */
+@property --teal {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #2c8593;
+}
+
+@property --teal-bright {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #42aebf;
+}
+
+@property --teal-deep {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #1d6270;
+}
+
+body {
+  /* case display type: Gilroy until a takeover provides a brand face */
+  --case-display: var(--font-body);
+}
+
+body[data-case-takeover='on'] {
+  --teal: var(--takeover-accent, #2c8593);
+  --teal-bright: var(--takeover-accent, #42aebf);
+  --teal-deep: color-mix(in srgb, var(--takeover-accent, #1d6270) 74%, #000);
+  --case-display: var(--takeover-display, var(--font-body));
+}
+
+/* ~600ms takeover transition; the variables animate on <body> so every
+   consumer (labels, buttons, links, chips, pull quote) follows in step.
+   Reduced motion gets the instant state swap. */
+@media (prefers-reduced-motion: no-preference) {
+  body {
+    transition:
+      --teal 600ms ease,
+      --teal-bright 600ms ease,
+      --teal-deep 600ms ease;
+  }
+}

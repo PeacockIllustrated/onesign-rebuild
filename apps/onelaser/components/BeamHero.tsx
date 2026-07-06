@@ -16,6 +16,16 @@
  * - Touch devices get auto mode: pointer handlers ignore touch input.
  * - Full cleanup on unmount (listeners, observers, timeouts, rAF).
  *
+ * V2 interaction upgrades (docs/v2-interactions.md, OneLaser):
+ * - Target cursor: while the pointer is over the hero and the beam is
+ *   following it, the native cursor is hidden (within the hero only,
+ *   restored on leave) and replaced by a tracked targeting reticle.
+ * - Click-and-hold power: while held, bloom intensity and ember spawn
+ *   rate rise moderately and the hot window widens slightly. Pointer
+ *   capture keeps the hold alive through small drift off the hero
+ *   edge; release returns everything to standard.
+ * Both are mouse/pen only and are never bound under reduced motion.
+ *
  * Preserved exactly from the reference:
  * - prefers-reduced-motion: reduce renders the finished still and
  *   binds no loop and no pointer handlers.
@@ -28,6 +38,8 @@
  */
 
 import { useEffect, useRef } from 'react';
+
+import styles from './BeamHero.module.css';
 
 interface CutState {
   ghost: SVGPathElement;
@@ -62,12 +74,22 @@ interface Ember {
 
 export function BeamHero() {
   const svgRef = useRef<SVGSVGElement>(null);
+  const reticleRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const svg = svgRef.current;
     if (!svg) return;
     const hero = svg.parentElement;
     if (!hero) return;
+    const reticle = reticleRef.current;
+
+    /* CSS module classes toggled on the hero/reticle (fallbacks are
+       never hit in practice; they keep classList calls non-empty). */
+    const cls = {
+      noCursor: styles.noCursor ?? 'noCursor',
+      on: styles.reticleOn ?? 'reticleOn',
+      powered: styles.reticlePowered ?? 'reticlePowered',
+    };
 
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const NS = 'http://www.w3.org/2000/svg';
@@ -85,6 +107,10 @@ export function BeamHero() {
     let hy = 0;
     let pts: Array<[number, number]> = [];
     let disposed = false;
+
+    /* click-and-hold power state (v2) */
+    let powered = false;
+    let capturedId: number | null = null;
 
     /* Timeouts tracked so unmount cannot fire stale visual state. */
     const timeouts = new Set<number>();
@@ -205,7 +231,8 @@ export function BeamHero() {
     }
 
     function ember(x: number, y: number) {
-      if (embers.length > 16) return;
+      /* ember cap raised moderately while the hold is powered */
+      if (embers.length > (powered ? 24 : 16)) return;
       embers.push({
         e: el('circle', { r: rnd(0.7, 1.5), fill: Math.random() < 0.7 ? '#7FE7F6' : '#EFFDFF', filter: 'url(#bloom)' }),
         x,
@@ -227,7 +254,11 @@ export function BeamHero() {
       cut.head.setAttribute('cy', String(y));
       cut.headGlow.setAttribute('cx', String(x));
       cut.headGlow.setAttribute('cy', String(y));
-      cut.headGlow.setAttribute('opacity', String(0.1 + 0.1 * flick));
+      /* bloom rises moderately while the hold is powered */
+      cut.headGlow.setAttribute(
+        'opacity',
+        String(powered ? 0.18 + 0.14 * flick : 0.1 + 0.1 * flick),
+      );
     }
     function beamOn(on: boolean) {
       if (!cut) return;
@@ -270,6 +301,31 @@ export function BeamHero() {
       raf = requestAnimationFrame(currentTick);
     };
 
+    /* --- target cursor (v2): tracked reticle, native cursor hidden
+       within the hero only, restored on leave --- */
+    const placeReticle = () => {
+      if (reticle) reticle.style.transform = 'translate3d(' + tx + 'px,' + ty + 'px,0)';
+    };
+    const showReticle = () => {
+      hero!.classList.add(cls.noCursor);
+      reticle?.classList.add(cls.on);
+      placeReticle();
+    };
+    const hideReticle = () => {
+      hero!.classList.remove(cls.noCursor);
+      reticle?.classList.remove(cls.on);
+    };
+
+    /* --- click-and-hold power (v2) --- */
+    const setPowered = (on: boolean) => {
+      if (powered === on) return;
+      powered = on;
+      /* hot layer thickens a touch while held; window widens in tick */
+      trail?.hot.setAttribute('stroke-width', on ? '2.1' : '1.6');
+      cut?.headGlow.setAttribute('r', on ? '20' : '14');
+      reticle?.classList.toggle(cls.powered, on);
+    };
+
     /* hand the beam to the visitor (mouse/pen only; touch keeps auto mode) */
     const onEnter = (e: PointerEvent) => {
       if (e.pointerType === 'touch' || !cut) return;
@@ -286,16 +342,23 @@ export function BeamHero() {
       cut.hot.style.transition = 'opacity .3s ease';
       cut.hot.setAttribute('opacity', '0');
       beamOn(true);
+      showReticle();
     };
     const onMove = (e: PointerEvent) => {
       if (e.pointerType === 'touch') return;
       const r = hero!.getBoundingClientRect();
-      tx = e.clientX - r.left;
-      ty = e.clientY - r.top;
+      /* clamped so a captured hold drifting off the edge keeps the
+         beam (and reticle) inside the hero */
+      tx = Math.min(Math.max(e.clientX - r.left, 0), r.width);
+      ty = Math.min(Math.max(e.clientY - r.top, 0), r.height);
+      placeReticle();
     };
-    const onLeave = (e: PointerEvent) => {
-      if (e.pointerType === 'touch' || mode !== 'user') return;
+    /* the machine takes the beam back (shared by leave and by a
+       release that lands outside the hero) */
+    const handOff = () => {
+      if (mode !== 'user') return;
       mode = 'auto';
+      hideReticle();
       fadeTrail();
       beamOn(false);
       later(() => {
@@ -308,10 +371,56 @@ export function BeamHero() {
         beamOn(true);
       }, 900);
     };
+    const onLeave = (e: PointerEvent) => {
+      if (e.pointerType === 'touch') return;
+      /* pointer capture holds the beam through small drift; the real
+         hand-off happens on release (endHold) */
+      if (capturedId !== null) return;
+      handOff();
+    };
+    const onDown = (e: PointerEvent) => {
+      if (e.pointerType === 'touch' || mode !== 'user') return;
+      /* never swallow the hero CTAs */
+      if (e.target instanceof Element && e.target.closest('a, button')) return;
+      e.preventDefault(); /* no text selection during the hold */
+      try {
+        hero!.setPointerCapture(e.pointerId);
+        capturedId = e.pointerId;
+      } catch {
+        capturedId = null;
+      }
+      setPowered(true);
+    };
+    const endHold = (e: PointerEvent) => {
+      if (e.pointerType === 'touch') return;
+      if (capturedId !== null) {
+        try {
+          hero!.releasePointerCapture(capturedId);
+        } catch {
+          /* capture already released by the browser */
+        }
+        capturedId = null;
+      }
+      if (!powered) return;
+      setPowered(false);
+      /* release after drifting off the hero edge: hand back to auto */
+      const r = hero!.getBoundingClientRect();
+      if (
+        e.clientX < r.left ||
+        e.clientX > r.right ||
+        e.clientY < r.top ||
+        e.clientY > r.bottom
+      ) {
+        handOff();
+      }
+    };
     if (!reduced) {
       hero.addEventListener('pointerenter', onEnter);
       hero.addEventListener('pointermove', onMove);
       hero.addEventListener('pointerleave', onLeave);
+      hero.addEventListener('pointerdown', onDown);
+      hero.addEventListener('pointerup', endHold);
+      hero.addEventListener('pointercancel', endHold);
     }
 
     function run() {
@@ -353,7 +462,8 @@ export function BeamHero() {
               trail.hot.setAttribute('d', d);
               const L = trail.settle.getTotalLength();
               const COOL = Math.min(220, L);
-              const HOT = Math.min(54, L);
+              /* hot window widens slightly while the hold is powered */
+              const HOT = Math.min(powered ? 78 : 54, L);
               trail.cool.style.strokeDasharray = COOL + ' ' + L;
               trail.cool.style.strokeDashoffset = String(COOL - L);
               trail.hot.style.strokeDasharray = HOT + ' ' + L;
@@ -361,7 +471,8 @@ export function BeamHero() {
             }
           }
           placeBeam(hx, hy, flick);
-          if (Math.random() < 0.4) ember(hx, hy);
+          /* ember spawn rate rises moderately while the hold is powered */
+          if (Math.random() < (powered ? 0.62 : 0.4)) ember(hx, hy);
           schedule();
           return;
         }
@@ -462,17 +573,35 @@ export function BeamHero() {
       hero.removeEventListener('pointerenter', onEnter);
       hero.removeEventListener('pointermove', onMove);
       hero.removeEventListener('pointerleave', onLeave);
+      hero.removeEventListener('pointerdown', onDown);
+      hero.removeEventListener('pointerup', endHold);
+      hero.removeEventListener('pointercancel', endHold);
+      hero.classList.remove(cls.noCursor);
       svg.innerHTML = '';
     };
   }, []);
 
   /* aria-hidden decoration, absolutely positioned behind the hero copy,
-     below the scrim (.stage in the reference). */
+     below the scrim (.stage in the reference). The reticle is the one
+     exception to "below the scrim": it is the visitor's cursor, so it
+     tracks above the copy (z-index 4), pointer-events: none. */
   return (
-    <svg
-      ref={svgRef}
-      aria-hidden="true"
-      style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}
-    />
+    <>
+      <svg
+        ref={svgRef}
+        aria-hidden="true"
+        style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}
+      />
+      <div ref={reticleRef} className={styles.reticle} aria-hidden="true">
+        <svg width="44" height="44" viewBox="0 0 44 44">
+          <circle cx="22" cy="22" r="11" fill="none" stroke="#2FD4EE" strokeWidth="1" opacity="0.9" />
+          <line x1="22" y1="4" x2="22" y2="12" stroke="#2FD4EE" strokeWidth="1" />
+          <line x1="22" y1="32" x2="22" y2="40" stroke="#2FD4EE" strokeWidth="1" />
+          <line x1="4" y1="22" x2="12" y2="22" stroke="#2FD4EE" strokeWidth="1" />
+          <line x1="32" y1="22" x2="40" y2="22" stroke="#2FD4EE" strokeWidth="1" />
+          <circle cx="22" cy="22" r="1.3" fill="#EFFDFF" />
+        </svg>
+      </div>
+    </>
   );
 }

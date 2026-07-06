@@ -1,0 +1,42 @@
+/* v2 landing hero interactions (docs/v2-interactions.md, OneLaser):
+   target cursor + click-and-hold power. Decoration only; the class is
+   toggled by BeamHero while the pointer is over the hero. */
+
+/* Hide the native cursor within the hero only. The descendant rule
+   (with !important) beats the UA pointer cursor on the hero's links
+   and buttons; the class is removed on pointerleave, so the cursor is
+   never hijacked outside the hero. */
+.noCursor,
+.noCursor * {
+  cursor: none !important;
+}
+
+/* Targeting reticle: a tracked element above the hero copy (z-index 4;
+   scrim is 2, copy is 3). pointer-events: none so it never intercepts
+   clicks on the hero CTAs. */
+.reticle {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 4;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  will-change: transform;
+}
+
+.reticleOn {
+  opacity: 1;
+}
+
+.reticle svg {
+  display: block;
+  transform: translate(-50%, -50%);
+  transition: transform 0.18s ease;
+}
+
+/* click-and-hold power: the reticle tightens and blooms while held */
+.reticlePowered svg {
+  transform: translate(-50%, -50%) scale(0.86);
+  filter: drop-shadow(0 0 7px rgba(47, 212, 238, 0.85));
+}

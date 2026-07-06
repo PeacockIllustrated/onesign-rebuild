@@ -36,8 +36,34 @@
   opacity: 0.55;
 }
 
+/* v2 ASCII case hero (docs/v2-interactions.md): the landing engine's
+   canvas fills the title band behind the copy. aria-hidden decoration;
+   the headline stays semantic DOM. */
+.titleStage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Centred legibility scrim over the ASCII canvas, below the copy. Copy
+   contrast is handled here, not by dimming the artwork. */
+.titleScrim {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 62% 78% at 50% 46%,
+    color-mix(in srgb, var(--hero-bg, #10181a) 88%, transparent) 0%,
+    color-mix(in srgb, var(--hero-bg, #10181a) 58%, transparent) 55%,
+    transparent 100%
+  );
+}
+
 .titleIn {
   position: relative;
+  z-index: 3;
 }
 
 .kind {
@@ -211,6 +237,9 @@
   letter-spacing: -0.02em;
   line-height: 1.08;
   margin-bottom: 18px;
+  /* takeover display face (Gilroy until a takeover is active); body
+     copy below stays Gilroy, display type only */
+  font-family: var(--case-display);
 }
 
 .chap p {
@@ -237,6 +266,7 @@
   line-height: 1.15;
   max-width: 820px;
   margin: 0 auto;
+  font-family: var(--case-display);
 }
 
 .pullAccent {
@@ -338,6 +368,7 @@
   font-size: clamp(24px, 3.8vw, 36px);
   letter-spacing: -0.02em;
   margin: 8px 0 28px;
+  font-family: var(--case-display);
 }
 
 .swatches {
@@ -441,6 +472,7 @@
   font-size: clamp(20px, 3.2vw, 28px);
   letter-spacing: -0.015em;
   max-width: 520px;
+  font-family: var(--case-display);
 }
 
 .made p {
@@ -491,6 +523,7 @@
   letter-spacing: -0.025em;
   margin-top: 10px;
   transition: 0.15s;
+  font-family: var(--case-display);
 }
 
 .next a:hover h3 {

@@ -12,7 +12,7 @@ import { SiteFooter } from '../components/SiteFooter';
 import { SiteNav } from '../components/SiteNav';
 import { SpecsStrip } from '../components/SpecsStrip';
 import { UploadBand } from '../components/UploadBand';
-import { caseStudies } from '../content/case-studies';
+import { caseStudies, specialtyServices } from '../content/case-studies';
 import { openGraph, servicesJsonLd } from '../lib/site';
 import styles from './page.module.css';
 
@@ -25,11 +25,16 @@ export const metadata: Metadata = {
 };
 
 /* Recent cuts cards: the two seeded case studies plus the third
-   reference card (JOB 1158). TODO: the OEM bracket batch case study
-   content has not been supplied; its card links to the index until
-   the job sheet arrives. */
+   reference card (JOB 1158). The reference three-card grid is the
+   visual spec, so the structure-only Specialty Services flagship stays
+   off the landing until its content is supplied (see
+   content/case-studies/index.ts). TODO: the OEM bracket batch case
+   study content has not been supplied; its card links to the index
+   until the job sheet arrives. */
 const cutItems = [
-  ...caseStudies.map((cs) => ({ ...cs.card, href: `/recent-cuts/${cs.slug}` })),
+  ...caseStudies
+    .filter((cs) => cs.slug !== specialtyServices.slug)
+    .map((cs) => ({ ...cs.card, href: `/recent-cuts/${cs.slug}` })),
   {
     title: 'OEM bracket batch',
     meta: 'JOB 1158 / 250 parts',
