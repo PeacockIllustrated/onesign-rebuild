@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
 
-import { Container, SectionHead } from '@onegroup/shared';
+import { Container } from '@onegroup/shared';
 
 import { MaterialsGrid } from '../../components/MaterialsGrid';
+import { PageHead } from '../../components/PageHead';
 import { openGraph } from '../../lib/site';
 import { SiteFooter } from '../../components/SiteFooter';
 import { SiteNav } from '../../components/SiteNav';
@@ -22,7 +23,7 @@ export default function MaterialsPage() {
     <>
       <SiteNav />
       <main>
-        <SectionHead
+        <PageHead
           label="materials"
           title="what we profile every day."
           text="OneLaser cuts stainless steel, aluminium and mild steel sheet up to 3 × 1.5 m in Gateshead. Thickness limits, grades and typical uses below; every figure is held on the machine, not in a brochure."

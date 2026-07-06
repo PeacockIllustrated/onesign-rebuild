@@ -1,0 +1,28 @@
+/* Mirror of packages/shared SectionHead.module.css (minus the action
+   variant), with the title on the page h1. Keep in sync with shared. */
+.shead {
+  padding: var(--shead-pt, 76px) 0 8px;
+}
+
+.lab {
+  font-family: var(--label-font, inherit);
+  font-size: var(--label-fs, 11px);
+  letter-spacing: var(--label-track, 0.2em);
+  text-transform: uppercase;
+  color: var(--teal, #127A8C);
+  font-weight: var(--label-weight, 400);
+}
+
+.title {
+  font-weight: 700;
+  font-size: var(--fs-h2, clamp(28px, 4.6vw, 46px));
+  letter-spacing: var(--track-h2, -0.015em);
+  margin-top: 8px;
+}
+
+.text {
+  max-width: 600px;
+  color: var(--steel, #5B6B70);
+  margin-top: 14px;
+  font-size: 15px;
+}

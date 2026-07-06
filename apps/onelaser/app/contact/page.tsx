@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 
-import { Container, SectionHead } from '@onegroup/shared';
+import { Container } from '@onegroup/shared';
 
+import { PageHead } from '../../components/PageHead';
 import { SiteFooter } from '../../components/SiteFooter';
 import { SiteNav } from '../../components/SiteNav';
 import { UploadBand } from '../../components/UploadBand';
@@ -21,7 +22,7 @@ export default function ContactPage() {
     <>
       <SiteNav />
       <main>
-        <SectionHead
+        <PageHead
           label="contact"
           title="talk to the people who run the machine."
           text="OneLaser cuts from the One Group floor on Team Valley, Gateshead. Call, email, or come and watch your job run; the person who quotes it is the person who cuts it."

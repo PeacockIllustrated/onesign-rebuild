@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 
-import { Container, SectionHead } from '@onegroup/shared';
+import { Container } from '@onegroup/shared';
 
+import { PageHead } from '../../components/PageHead';
 import { SiteFooter } from '../../components/SiteFooter';
 import { SiteNav } from '../../components/SiteNav';
 import { UploadForm } from '../../components/UploadForm';
@@ -21,7 +22,7 @@ export default function UploadPage() {
     <>
       <SiteNav />
       <main>
-        <SectionHead
+        <PageHead
           label="upload"
           title="got a drawing ready?"
           text="Drop a DXF and get a price back the same working day. No minimum order, no drawn-out quoting chain. The price comes from the true cut length, pierces and material, not a guess."

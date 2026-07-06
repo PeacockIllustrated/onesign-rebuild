@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import { Container, SectionHead } from '@onegroup/shared';
 
 import { JsonLd } from '../../components/JsonLd';
+import { PageHead } from '../../components/PageHead';
 import { ProcessGrid } from '../../components/ProcessGrid';
 import { SiteFooter } from '../../components/SiteFooter';
 import { SiteNav } from '../../components/SiteNav';
@@ -35,7 +36,7 @@ export default function CapabilitiesPage() {
     <>
       <SiteNav />
       <main>
-        <SectionHead
+        <PageHead
           label="capabilities"
           title="one machine, run properly."
           text="OneLaser is a precision laser cutting service in Gateshead, cutting stainless, aluminium and mild steel for engineers, fabricators, contractors and OEM buyers across the North East and the rest of the UK."

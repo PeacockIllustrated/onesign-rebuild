@@ -1,8 +1,7 @@
 import type { Metadata } from 'next';
 
-import { SectionHead } from '@onegroup/shared';
-
 import { CutCards } from '../../components/CutCards';
+import { PageHead } from '../../components/PageHead';
 import { SiteFooter } from '../../components/SiteFooter';
 import { SiteNav } from '../../components/SiteNav';
 import { UploadBand } from '../../components/UploadBand';
@@ -22,7 +21,7 @@ export default function RecentCutsPage() {
     <>
       <SiteNav />
       <main>
-        <SectionHead
+        <PageHead
           label="recent cuts"
           title="every job leaves with its numbers."
           text="Case studies from the bed: what was cut, the tolerance held, the measured variance across the batch and how long it took. Evidence, not a gallery."
