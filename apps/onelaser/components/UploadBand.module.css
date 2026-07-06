@@ -1,0 +1,73 @@
+/* DXF upload band (centrepiece CTA), ported from
+   reference/laser-landing.html (.band). */
+
+.band {
+  background: var(--nav);
+  color: #fff;
+  border-radius: var(--r);
+  margin: 70px 0 0;
+  padding: 44px 38px;
+  position: relative;
+  overflow: hidden;
+  /* primary button re-cut for the dark band: hover brightens */
+  --btn-bg-hover: var(--teal-bright);
+}
+
+.path {
+  position: absolute;
+  inset: 0;
+  opacity: 0.35;
+  width: 100%;
+  height: 100%;
+}
+
+.path path {
+  fill: none;
+  stroke: var(--teal-bright);
+  stroke-width: 1.4;
+}
+
+.in {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.in h2 {
+  font-weight: 700;
+  font-size: clamp(24px, 3.6vw, 36px);
+  letter-spacing: -0.015em;
+}
+
+.in p {
+  color: #afc2c6;
+  font-size: 14px;
+  margin-top: 8px;
+  max-width: 440px;
+}
+
+.steps {
+  display: flex;
+  gap: 18px;
+  margin-top: 16px;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--teal-bright);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .draw {
+    stroke-dasharray: var(--len);
+    stroke-dashoffset: var(--len);
+    animation: draw 2.6s ease forwards;
+  }
+
+  @keyframes draw {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+}

@@ -1,0 +1,43 @@
+/* Base styles ported from reference/laser-landing.html. Colours and
+   type come from @onegroup/shared tokens (scoped by .brand-onelaser
+   on <html>); only the structural resets live here. */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  line-height: var(--lh-body);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+::selection {
+  background: var(--teal);
+  color: #fff;
+}
+
+b,
+strong {
+  font-weight: 700;
+}
+
+/* Mono is reserved for data: specs, job numbers, HUD labels. Never prose. */
+.mono {
+  font-family: var(--mono);
+  font-size: 0.86em;
+  letter-spacing: 0.02em;
+}

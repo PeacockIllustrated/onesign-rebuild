@@ -1,0 +1,65 @@
+/* Recent cuts cards, ported from reference/laser-landing.html (.cuts / .cut). */
+
+.cuts {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  padding: 44px 0 8px;
+}
+
+.cut {
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  overflow: hidden;
+  display: block;
+}
+
+.cut:hover {
+  border-color: var(--teal);
+}
+
+.ph {
+  height: 190px;
+  background: linear-gradient(160deg, #20323680, var(--teal-deep));
+  display: flex;
+  align-items: flex-end;
+  padding: 14px;
+}
+
+.ph span {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: #fff;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+
+.bd {
+  padding: 16px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.bd h3 {
+  font-weight: 700;
+  font-size: 15.5px;
+}
+
+.m {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--steel);
+}
+
+.go {
+  color: var(--teal);
+  font-weight: 700;
+}
+
+@media (max-width: 820px) {
+  .cuts {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,82 @@
+/* Landing hero, ported from reference/laser-landing.html (.hero). */
+
+.hero {
+  position: relative;
+  min-height: 620px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  background: var(--hero-bg);
+  border-bottom: 1px solid var(--line);
+  /* ghost button re-cut for the dark ground (reference .hero .btn.ghost) */
+  --btn-ghost-border: #263438;
+  --btn-ghost-fg: #e7eef0;
+  --btn-ghost-border-hover: var(--hero-accent);
+  --btn-ghost-fg-hover: var(--hero-accent);
+}
+
+/* Flex hero gotcha: the inner container is a flex child and must keep
+   width: 100% or margin: 0 auto shrink-wraps and mis-centres it. The
+   shared Container already sets width: 100%; do not remove it. */
+.inner {
+  position: relative;
+  z-index: 3;
+  padding: 70px 0;
+}
+
+.eyebrow {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--teal-bright);
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.h1 {
+  font-weight: 700;
+  line-height: var(--lh-display);
+  letter-spacing: var(--track-display);
+  font-size: var(--fs-display);
+  color: var(--hero-h1);
+}
+
+.accent {
+  color: var(--hero-accent);
+}
+
+.lede {
+  max-width: 520px;
+  margin-top: 20px;
+  color: var(--hero-lede);
+  font-size: 16px;
+}
+
+.btns {
+  display: flex;
+  gap: 12px;
+  margin-top: 30px;
+  flex-wrap: wrap;
+}
+
+.readout {
+  display: flex;
+  gap: 26px;
+  margin-top: 34px;
+  flex-wrap: wrap;
+}
+
+.readout > div {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: #6e8287;
+}
+
+.readout b {
+  display: block;
+  color: var(--hero-h1);
+  font-size: 15px;
+  font-family: var(--font-body);
+  letter-spacing: 0;
+}
