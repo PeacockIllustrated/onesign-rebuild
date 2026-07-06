@@ -10,6 +10,12 @@ export const metadata: Metadata = {
   title: 'Studio',
   description:
     'OneDesign Studios is the creative studio of One Group, Gateshead. A studio with a factory attached: concept-first branding, fabricated and installed by our sister companies.',
+  openGraph: {
+    type: 'website',
+    siteName: 'OneDesign Studios',
+    url: 'https://onedesignstudios.com/studio',
+    images: [{ url: '/og/studio.png', width: 1200, height: 630 }],
+  },
 };
 
 export default function StudioPage() {

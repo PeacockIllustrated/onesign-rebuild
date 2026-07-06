@@ -5,7 +5,7 @@ import { Container, SectionHead } from '@onegroup/shared';
 import { SiteFooter } from '../../components/SiteFooter';
 import { SiteNav } from '../../components/SiteNav';
 import { UploadForm } from '../../components/UploadForm';
-import { QUOTE_EMAIL } from '../../lib/site';
+import { openGraph, QUOTE_EMAIL } from '../../lib/site';
 import styles from '../subpage.module.css';
 
 export const metadata: Metadata = {
@@ -13,6 +13,7 @@ export const metadata: Metadata = {
   description:
     'Upload a DXF or DWG and get a laser cutting price back the same working day from OneLaser in Gateshead. No minimum order, no drawn-out quoting chain.',
   alternates: { canonical: '/upload' },
+  openGraph: openGraph('/og/upload.png'),
 };
 
 export default function UploadPage() {

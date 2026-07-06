@@ -4,6 +4,7 @@ import { Button, Container, SectionHead } from '@onegroup/shared';
 
 import { BeamHero } from '../components/BeamHero';
 import { CutCards } from '../components/CutCards';
+import { FaqSection } from '../components/FaqSection';
 import { JsonLd } from '../components/JsonLd';
 import { MaterialsGrid } from '../components/MaterialsGrid';
 import { ProcessGrid } from '../components/ProcessGrid';
@@ -12,7 +13,7 @@ import { SiteNav } from '../components/SiteNav';
 import { SpecsStrip } from '../components/SpecsStrip';
 import { UploadBand } from '../components/UploadBand';
 import { caseStudies } from '../content/case-studies';
-import { servicesJsonLd } from '../lib/site';
+import { openGraph, servicesJsonLd } from '../lib/site';
 import styles from './page.module.css';
 
 export const metadata: Metadata = {
@@ -20,6 +21,7 @@ export const metadata: Metadata = {
   description:
     '3kW fibre laser cutting in stainless, aluminium and mild steel from Gateshead. Upload a DXF, get a price the same working day, take delivery of parts that fit first time.',
   alternates: { canonical: '/' },
+  openGraph: openGraph('/og/home.png'),
 };
 
 /* Recent cuts cards: the two seeded case studies plus the third
@@ -103,6 +105,8 @@ export default function HomePage() {
 
         <SectionHead label="recent cuts" title="off the bed this month." id="work" />
         <CutCards items={cutItems} />
+
+        <FaqSection id="faq" />
       </main>
       <SiteFooter />
       {servicesJsonLd.map((s) => (

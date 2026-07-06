@@ -7,12 +7,14 @@ import { SiteFooter } from '../../components/SiteFooter';
 import { SiteNav } from '../../components/SiteNav';
 import { UploadBand } from '../../components/UploadBand';
 import { caseStudies } from '../../content/case-studies';
+import { openGraph } from '../../lib/site';
 
 export const metadata: Metadata = {
   title: 'Recent cuts: laser cutting case studies',
   description:
     'Laser cutting case studies from the OneLaser bed in Gateshead: material, tolerance held, measured variance and lead time, written up job by job.',
   alternates: { canonical: '/recent-cuts' },
+  openGraph: openGraph('/og/recent-cuts.png'),
 };
 
 export default function RecentCutsPage() {

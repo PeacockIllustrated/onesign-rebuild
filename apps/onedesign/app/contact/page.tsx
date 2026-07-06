@@ -10,6 +10,12 @@ export const metadata: Metadata = {
   title: 'Contact, start a project',
   description:
     'Start a project with OneDesign Studios, Gateshead. Brand identity, retail and environmental graphics; call 0191 487 6767 or write to the studio.',
+  openGraph: {
+    type: 'website',
+    siteName: 'OneDesign Studios',
+    url: 'https://onedesignstudios.com/contact',
+    images: [{ url: '/og/contact.png', width: 1200, height: 630 }],
+  },
 };
 
 export default function ContactPage() {

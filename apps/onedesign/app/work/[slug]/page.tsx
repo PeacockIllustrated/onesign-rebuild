@@ -23,6 +23,15 @@ export function generateMetadata({ params }: Params): Metadata {
   return {
     title: `${cs.title} | work`,
     description: cs.metaDescription ?? cs.sub,
+    openGraph: {
+      type: 'article',
+      siteName: 'OneDesign Studios',
+      url: `${SITE_URL}/work/${cs.slug}`,
+      ...(cs.datePublished ? { publishedTime: cs.datePublished } : {}),
+      /* static per-case OG art; re-run scripts/generate-og.mjs (npm run
+         generate:og) when adding a case study so its card exists */
+      images: [{ url: `/og/work-${cs.slug}.png`, width: 1200, height: 630 }],
+    },
   };
 }
 

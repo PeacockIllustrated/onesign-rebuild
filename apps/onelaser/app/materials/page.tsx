@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import { Container, SectionHead } from '@onegroup/shared';
 
 import { MaterialsGrid } from '../../components/MaterialsGrid';
+import { openGraph } from '../../lib/site';
 import { SiteFooter } from '../../components/SiteFooter';
 import { SiteNav } from '../../components/SiteNav';
 import { UploadBand } from '../../components/UploadBand';
@@ -13,6 +14,7 @@ export const metadata: Metadata = {
   description:
     'Laser cut stainless steel 0.9 to 12 mm (304, 316), aluminium 0.9 to 10 mm (5083, 5754) and mild steel 0.9 to 20 mm (CR4, S275) in Gateshead. Sheet up to 3 × 1.5 m.',
   alternates: { canonical: '/materials' },
+  openGraph: openGraph('/og/materials.png'),
 };
 
 export default function MaterialsPage() {

@@ -6,6 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "generate:og": "node scripts/generate-og.mjs",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

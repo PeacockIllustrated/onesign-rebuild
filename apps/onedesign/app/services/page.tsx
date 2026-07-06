@@ -10,6 +10,12 @@ export const metadata: Metadata = {
   title: 'Services: brand identity, retail branding, environmental graphics',
   description:
     'Brand identity, retail branding, environmental graphics and signage design from OneDesign Studios, Gateshead. Concept-first creative work, built to become real.',
+  openGraph: {
+    type: 'website',
+    siteName: 'OneDesign Studios',
+    url: 'https://onedesignstudios.com/services',
+    images: [{ url: '/og/services.png', width: 1200, height: 630 }],
+  },
 };
 
 const SITE_URL = 'https://onedesignstudios.com';

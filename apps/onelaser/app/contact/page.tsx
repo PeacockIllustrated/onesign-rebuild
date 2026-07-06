@@ -5,7 +5,7 @@ import { Container, SectionHead } from '@onegroup/shared';
 import { SiteFooter } from '../../components/SiteFooter';
 import { SiteNav } from '../../components/SiteNav';
 import { UploadBand } from '../../components/UploadBand';
-import { GROUP_LINKS, QUOTE_EMAIL } from '../../lib/site';
+import { GROUP_LINKS, openGraph, QUOTE_EMAIL } from '../../lib/site';
 import styles from '../subpage.module.css';
 
 export const metadata: Metadata = {
@@ -13,6 +13,7 @@ export const metadata: Metadata = {
   description:
     'OneLaser, precision laser cutting at D86 Princesway North, Team Valley, Gateshead NE11 0TU. Call 0191 487 6767 or email a drawing for a same-day price.',
   alternates: { canonical: '/contact' },
+  openGraph: openGraph('/og/contact.png'),
 };
 
 export default function ContactPage() {

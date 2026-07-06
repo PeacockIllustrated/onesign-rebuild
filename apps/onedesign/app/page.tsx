@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { Button, Container, SectionHead } from '@onegroup/shared';
 
 import { AsciiHero } from '../components/AsciiHero';
+import { Faq } from '../components/Faq';
 import { SiteFooter, SiteNav } from '../components/SiteChrome';
 import { WorkGrid } from '../components/WorkGrid';
 
@@ -197,6 +198,8 @@ export default function HomePage() {
             </p>
           </div>
         </Container>
+
+        <Faq />
 
         <Container as="section" className={styles.endcta}>
           <h2>

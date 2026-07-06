@@ -12,6 +12,12 @@ export const metadata: Metadata = {
   title: 'Work',
   description:
     'Selected branding, retail and environmental graphics projects by OneDesign Studios, Gateshead. Identity and environment work designed to survive the real world.',
+  openGraph: {
+    type: 'website',
+    siteName: 'OneDesign Studios',
+    url: 'https://onedesignstudios.com/work',
+    images: [{ url: '/og/work.png', width: 1200, height: 630 }],
+  },
 };
 
 export default function WorkPage() {

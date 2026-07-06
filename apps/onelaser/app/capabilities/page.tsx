@@ -8,7 +8,7 @@ import { SiteFooter } from '../../components/SiteFooter';
 import { SiteNav } from '../../components/SiteNav';
 import { SpecsStrip } from '../../components/SpecsStrip';
 import { UploadBand } from '../../components/UploadBand';
-import { servicesJsonLd } from '../../lib/site';
+import { openGraph, servicesJsonLd } from '../../lib/site';
 import styles from '../subpage.module.css';
 
 export const metadata: Metadata = {
@@ -16,6 +16,7 @@ export const metadata: Metadata = {
   description:
     '3kW fibre laser, 3 × 1.5 m bed, ±0.1 mm tolerance. Stainless to 12 mm, aluminium to 10 mm, mild steel to 20 mm. Kerf from 0.15 mm, turnaround from 48 hours.',
   alternates: { canonical: '/capabilities' },
+  openGraph: openGraph('/og/capabilities.png'),
 };
 
 /* Machine data as DOM text, not images (docs/seo-aeo.md). Figures are

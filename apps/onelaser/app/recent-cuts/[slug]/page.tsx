@@ -6,7 +6,7 @@ import { CaseFooterWrap, LaserCaseStudy } from '../../../components/LaserCaseStu
 import { SlimFooter } from '../../../components/SiteFooter';
 import { SiteNav } from '../../../components/SiteNav';
 import { caseStudies, getCaseStudy } from '../../../content/case-studies';
-import { SITE_URL } from '../../../lib/site';
+import { openGraph, SITE_URL } from '../../../lib/site';
 
 interface Params {
   slug: string;
@@ -25,6 +25,9 @@ export function generateMetadata({ params }: { params: Params }): Metadata {
     title: `Case study: ${cs.card.title}`,
     description: cs.metaDescription,
     alternates: { canonical: `/recent-cuts/${cs.slug}` },
+    /* Static per-study OG frame; scripts/generate-og.mjs keeps these
+       in sync with content/case-studies/. */
+    openGraph: openGraph(`/og/recent-cuts-${cs.slug}.png`, { type: 'article' }),
   };
 }
 
