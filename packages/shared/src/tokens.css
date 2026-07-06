@@ -1,0 +1,204 @@
+/* ============================================================
+   One Group design tokens
+   Source of truth: docs/tokens.md (values extracted from the
+   approved reference HTML and exact). One shared layer, two
+   brand override scopes. Apply .brand-onelaser or
+   .brand-onedesign as a class on <html> or <body>.
+   ============================================================ */
+
+/* ---------- shared layer ---------- */
+
+:root {
+  /* type: Gilroy everywhere, 400 body, 700 display and emphasis.
+     --font-gilroy is injected by next/font (see src/fonts.ts). */
+  --font-body: var(--font-gilroy, 'Gilroy', system-ui, sans-serif);
+  --mono: 'SFMono-Regular', ui-monospace, 'Cascadia Mono', Consolas, monospace;
+
+  /* display headlines: lowercase, tight */
+  --fs-display: clamp(44px, 7.6vw, 92px);
+  --lh-display: 1.0;
+  --track-display: -0.02em;
+  --fs-h2: clamp(28px, 4.6vw, 46px);
+  --track-h2: -0.015em;
+  --lh-body: 1.55;
+
+  /* layout: container 1160px (case studies 1060px, narrative 680px) */
+  --container: 1160px;
+  --container-case: 1060px;
+  --container-narrative: 680px;
+  --pad-x: 26px;
+
+  /* section rhythm, ~70 to 90px vertical */
+  --rhythm: 76px;
+  --rhythm-lg: 90px;
+
+  /* buttons: 700 weight, 13 to 15px, primary solid, secondary ghost/soft */
+  --btn-weight: 700;
+  --btn-fs: 14px;
+  --btn-pad: 14px 26px;
+}
+
+/* ---------- OneLaser (onelasercutting.com) ---------- */
+
+.brand-onelaser {
+  --paper: #FFFFFF;
+  --wash: #F1F4F5;
+  --ink: #0F1719;
+  --steel: #5B6B70;
+  --line: #DDE4E5;
+  --teal: #127A8C;
+  --teal-deep: #0C5464;
+  --teal-bright: #19A7BE;
+  --nav: #0C1315;
+  --r: 6px;
+  /* dark hero */
+  --hero-bg: #0B1214;
+  --hero-h1: #F4F8F9;
+  --hero-accent: #2FD4EE;
+  --hero-lede: #93A7AC;
+  --hot: #2FD4EE;
+  --hot-core: #EFFDFF;
+}
+
+/* ---------- OneDesign (onedesignstudios.com) ---------- */
+
+.brand-onedesign {
+  --paper: #FDFDFC;
+  --wash: #F3F6F5;
+  --ink: #171E1D;
+  --steel: #61706E;
+  --line: #E2E8E7;
+  --teal: #2C8593;
+  --teal-deep: #1D6270;
+  --teal-bright: #42AEBF;
+  --nav: #12191A;
+  --r: 22px;
+  /* dark hero */
+  --hero-bg: #10181A;
+  --hero-h1: #F4F8F7;
+  --hero-lede: #9AAEAB;
+  /* per-case-study project palette, three slots (example: Dirty Murphy's).
+     Case study pages override these per project. */
+  --p1: #0F1B14;
+  --p2: #B8935A;
+  --p3: #E9E2D2;
+}
+
+/* ------------------------------------------------------------
+   Derived component tokens (extracted from the reference HTML,
+   not in docs/tokens.md; they encode the per-brand temperament
+   so shared components read correctly under each scope).
+   ------------------------------------------------------------ */
+
+.brand-onelaser {
+  /* type: near-square, mono data everywhere numbers appear */
+  --fs-display: clamp(44px, 7.6vw, 92px);
+  --lh-display: 1.0;
+  --track-display: -0.02em;
+  --fs-h2: clamp(28px, 4.6vw, 46px);
+  --track-h2: -0.015em;
+  --lh-body: 1.55;
+
+  /* eyebrow / section labels are mono on OneLaser */
+  --label-font: var(--mono);
+  --label-fs: 11px;
+  --label-track: 0.2em;
+  --label-weight: 400;
+
+  /* buttons: rectangular (radius --r), teal solid, ghost outline */
+  --btn-r: var(--r);
+  --btn-pad: 14px 26px;
+  --btn-fs: 14px;
+  --btn-bg: var(--teal);
+  --btn-fg: #FFFFFF;
+  --btn-bg-hover: var(--teal-deep);
+  --btn-ghost-bg: transparent;
+  --btn-ghost-border: var(--line);
+  --btn-ghost-fg: var(--ink);
+  --btn-ghost-bg-hover: transparent;
+  --btn-ghost-border-hover: var(--teal);
+  --btn-ghost-fg-hover: var(--teal);
+  --btn-sm-pad: 8px 18px;
+  --btn-sm-bg-hover: var(--teal-bright);
+
+  /* nav and footer chrome */
+  --nav-pad: 16px 26px;
+  --footer-mt: 70px;
+  --footer-fg: #BFCCCF;
+  --footer-link: #93A4A8;
+  --footer-dim: #69797D;
+  --footer-line: #1B2629;
+  --footer-slim-fg: #8FA2A6;
+  --footer-slim-link: #BFCCCF;
+  --footer-url-fs: 12px;
+  --footer-url-weight: 400;
+  --shead-pt: 76px;
+}
+
+.brand-onedesign {
+  /* type: biggest of the family, generous whitespace */
+  --fs-display: clamp(46px, 8.4vw, 104px);
+  --lh-display: 0.98;
+  --track-display: -0.025em;
+  --fs-h2: clamp(30px, 5vw, 52px);
+  --track-h2: -0.02em;
+  --lh-body: 1.65;
+
+  /* eyebrow / section labels are Gilroy bold on OneDesign */
+  --label-font: var(--font-body);
+  --label-fs: 13px;
+  --label-track: 0.16em;
+  --label-weight: 700;
+
+  /* buttons: pills (border-radius 100px), ink solid, soft wash secondary */
+  --btn-r: 100px;
+  --btn-pad: 15px 30px;
+  --btn-fs: 15px;
+  --btn-bg: var(--ink);
+  --btn-fg: #FFFFFF;
+  --btn-bg-hover: var(--teal);
+  --btn-ghost-bg: var(--wash);
+  --btn-ghost-border: transparent;
+  --btn-ghost-fg: var(--ink);
+  --btn-ghost-bg-hover: var(--teal);
+  --btn-ghost-border-hover: transparent;
+  --btn-ghost-fg-hover: #FFFFFF;
+  --btn-sm-pad: 9px 20px;
+  --btn-sm-bg-hover: var(--teal);
+
+  /* nav and footer chrome (light nav) */
+  --nav-pad: 20px 26px;
+  --footer-mt: 0px;
+  --footer-fg: #A8BBBE;
+  --footer-link: #8FA2A0;
+  --footer-dim: #6C7E7C;
+  --footer-line: #1E2A2B;
+  --footer-slim-fg: #8FA2A0;
+  --footer-slim-link: #C4D2D0;
+  --footer-url-fs: 13px;
+  --footer-url-weight: 700;
+  --shead-pt: 80px;
+}
+
+/* ------------------------------------------------------------
+   Dark hero pattern (both sites)
+   Hero band is dark on an otherwise light page. Laser's dark is
+   blue-black (#0B1214), Design's is warmer green-black (#10181A).
+   Left-side legibility scrim: hero-bg at ~.94 opacity fading to
+   transparent by ~78%. Headline light, accent in the brand's
+   bright teal, buttons re-cut for dark ground.
+   ------------------------------------------------------------ */
+
+.hero-scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--hero-bg) 94%, transparent) 0%,
+    color-mix(in srgb, var(--hero-bg) 62%, transparent) 40%,
+    color-mix(in srgb, var(--hero-bg) 8%, transparent) 68%,
+    transparent 78%
+  );
+}

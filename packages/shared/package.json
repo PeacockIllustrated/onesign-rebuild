@@ -1,0 +1,32 @@
+{
+  "name": "@onegroup/shared",
+  "version": "0.1.0",
+  "private": true,
+  "description": "One Group shared design system: tokens, Gilroy fonts, layout primitives and content types. Ships raw TypeScript; consuming apps must add '@onegroup/shared' to next.config transpilePackages.",
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./fonts": {
+      "types": "./src/fonts.ts",
+      "default": "./src/fonts.ts"
+    },
+    "./tokens.css": "./src/tokens.css",
+    "./fonts/*": "./fonts/*",
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "next": ">=14.0.0 <15",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  }
+}

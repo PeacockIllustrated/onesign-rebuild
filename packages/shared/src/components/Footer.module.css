@@ -1,0 +1,106 @@
+/* Footer, two cuts from the references: 'full' (landing pages, column
+   grid + note row) and 'slim' (case studies, single row). Always on
+   the dark --nav ground. Brand chrome (cross-link sentences, column
+   content) is passed in by the app, never hardcoded here. */
+.footer {
+  background: var(--nav, #0C1315);
+  color: var(--footer-fg, #BFCCCF);
+  margin-top: var(--footer-mt, 70px);
+  padding: 44px 0 28px;
+}
+
+.slim {
+  margin-top: var(--footer-mt, 70px);
+  padding: 26px;
+  font-size: 12.5px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  color: var(--footer-slim-fg, #8FA2A6);
+}
+
+.slim a {
+  color: var(--footer-slim-link, #BFCCCF);
+  text-decoration: none;
+}
+
+.fgrid {
+  display: flex;
+  justify-content: space-between;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-weight: 700;
+  font-size: 20px;
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+.mark {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid var(--teal-bright, #19A7BE);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  color: var(--teal-bright, #19A7BE);
+}
+
+.desc {
+  max-width: 250px;
+  font-size: 13.5px;
+  color: var(--footer-link, #93A4A8);
+}
+
+.url {
+  font-family: var(--label-font, inherit);
+  font-size: var(--footer-url-fs, 12px);
+  font-weight: var(--footer-url-weight, 400);
+  color: var(--teal-bright, #19A7BE);
+  margin-top: 12px;
+}
+
+.col h5 {
+  color: #fff;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  font-family: var(--label-font, inherit);
+  font-weight: var(--label-weight, 400);
+}
+
+.col a,
+.col p {
+  display: block;
+  font-size: 13.5px;
+  color: var(--footer-link, #93A4A8);
+  margin-bottom: 7px;
+  text-decoration: none;
+}
+
+.fnote {
+  border-top: 1px solid var(--footer-line, #1B2629);
+  margin-top: 30px;
+  padding-top: 18px;
+  font-size: 12px;
+  color: var(--footer-dim, #69797D);
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.fnoteLinks a {
+  color: var(--footer-link, #93A4A8);
+  margin-left: 14px;
+  text-decoration: none;
+}

@@ -1,0 +1,20 @@
+/* Layout container. width: 100% is load-bearing: a flex child with
+   margin: 0 auto shrink-wraps and mis-centres (the hero bug found and
+   fixed in the references); do not remove it. */
+.base {
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 var(--pad-x, 26px);
+}
+
+.site {
+  max-width: var(--container, 1160px);
+}
+
+.case {
+  max-width: var(--container-case, 1060px);
+}
+
+.narrative {
+  max-width: var(--container-narrative, 680px);
+}

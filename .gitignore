@@ -1,0 +1,17 @@
+# dependencies
+node_modules/
+
+# next.js / build output
+.next/
+out/
+dist/
+.vercel/
+
+# typescript
+*.tsbuildinfo
+
+# misc
+.DS_Store
+.env*
+
+# fonts: woff2 files are committed on purpose, do NOT ignore *.woff2

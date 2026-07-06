@@ -1,0 +1,48 @@
+/* Primary solid + secondary ghost/soft. The brand scope controls the
+   radius (--btn-r follows --r on OneLaser, 100px pill on OneDesign)
+   and colours, so one component reads rectangular-technical on
+   OneLaser and pill-warm on OneDesign. */
+.btn {
+  display: inline-block;
+  background: var(--btn-bg, var(--teal, #127A8C));
+  color: var(--btn-fg, #fff);
+  padding: var(--btn-pad, 14px 26px);
+  border: none;
+  border-radius: var(--btn-r, var(--r, 6px));
+  font-family: inherit;
+  font-weight: var(--btn-weight, 700);
+  font-size: var(--btn-fs, 14px);
+  line-height: inherit;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: 0.15s;
+}
+
+.btn:hover {
+  background: var(--btn-bg-hover, var(--teal-deep, #0C5464));
+}
+
+/* Secondary: outline ghost on OneLaser, soft wash fill on OneDesign,
+   both driven entirely by brand tokens. */
+.ghost {
+  background: var(--btn-ghost-bg, transparent);
+  border: 1.5px solid var(--btn-ghost-border, var(--line, #DDE4E5));
+  color: var(--btn-ghost-fg, var(--ink, #0F1719));
+}
+
+.ghost:hover {
+  background: var(--btn-ghost-bg-hover, transparent);
+  border-color: var(--btn-ghost-border-hover, var(--teal, #127A8C));
+  color: var(--btn-ghost-fg-hover, var(--teal, #127A8C));
+}
+
+/* Nav CTA size (.cta-sm in the references). */
+.sm {
+  padding: var(--btn-sm-pad, 8px 18px);
+  font-size: 13px;
+}
+
+.sm:hover {
+  background: var(--btn-sm-bg-hover, var(--teal-bright, #19A7BE));
+}
